@@ -3,23 +3,47 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\OperationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: OperationRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            normalizationContext: ['groups' => ['read:Operation:collection']]
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['read:Operation:collection', 'read:Operation:item']]
+        ),
+        new Post(),
+        new Put(
+            denormalizationContext: ['groups' => ['put:Operation']]
+        ),new Patch(
+            denormalizationContext: ['groups' => ['put:Operation']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['read:Operation:collection']],
+)]
 class Operation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:Operation:collection'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:Operation:collection', 'put:Operation'])]
     private ?string $label = null;
 
     #[ORM\Column]
+    #[Groups(['read:Operation:collection'])]
     private ?float $amount = null;
 
     #[ORM\Column]
@@ -27,6 +51,7 @@ class Operation
 
     #[ORM\ManyToOne(inversedBy: 'operations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:Operation:collection'])]
     private ?Category $category = null;
 
     public function getId(): ?int
