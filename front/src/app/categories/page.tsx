@@ -5,7 +5,8 @@ import Link from 'next/link';
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog'; 
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogFooter, AlertDialogAction, AlertDialogCancel, AlertDialogTitle, AlertDialogDescription } from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 const CategoriesPage: React.FC = () => {
   const { categories, loading, error, deleteCategory } = useCategories();
@@ -26,6 +27,12 @@ const CategoriesPage: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     await deleteCategory(id);
+    toast("Category deleted successfully", {
+      style: {
+        background: "#4CAF50",
+        color: "#FFFFFF",
+      },
+    });
     window.location.reload();
   };
 
@@ -56,6 +63,8 @@ const CategoriesPage: React.FC = () => {
                     <Button variant="destructive">Delete</Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
+                    <AlertDialogTitle></AlertDialogTitle>
+                    <AlertDialogDescription></AlertDialogDescription>
                     <h2 className="text-lg font-bold">Confirm Deletion</h2>
                     <p>Are you sure you want to delete the category "{category.title}"?</p>
                     <AlertDialogFooter>

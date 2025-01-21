@@ -1,25 +1,27 @@
 'use client';
-import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import { useCategories } from '@/hooks/useCategories';
-import { Alert } from '@/components/ui/alert';
+import { useParams, useRouter } from 'next/navigation';
+import React, { use, useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input'; // shadcn Input component
+import { Button } from '@/components/ui/button'; // shadcn Button component
+import { Label } from '@/components/ui/label'; // shadcn Label component
+import { Alert } from '@/components/ui/alert'; // shadcn Alert component (optional for errors)
+import { toast } from 'sonner';
 
-const CreateCategoryPage: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const { categories, createCategory } = useCategories();
+const EditCategoryPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const { categories, updateCategory } = useCategories();
+  const category = categories.find((cat) => cat.id === Number(id));
+
+  const [title, setTitle] = useState(category?.title || '');
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    //TODO: Implement the handleSubmit function
     e.preventDefault();
     try {
-      await createCategory({ title });
-      toast("Category added successfully", {
+      await updateCategory(Number(id), { title });
+      toast("Category updated successfully", {
         style: {
           background: "#4CAF50",
           color: "#FFFFFF",
@@ -38,7 +40,7 @@ const CreateCategoryPage: React.FC = () => {
         onSubmit={handleSubmit}
         className="w-full max-w-md p-6 bg-white rounded-lg shadow-md space-y-6"
       >
-        <h1 className="text-2xl font-semibold text-gray-800">Create Category</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">Edit Category</h1>
         {error && (
           <Alert variant="destructive" className="text-sm">
             {error}
@@ -58,11 +60,11 @@ const CreateCategoryPage: React.FC = () => {
           />
         </div>
         <Button type="submit" className="w-full">
-          Create
+          Save
         </Button>
       </form>
     </div>
   );
 };
 
-export default CreateCategoryPage;
+export default EditCategoryPage;
