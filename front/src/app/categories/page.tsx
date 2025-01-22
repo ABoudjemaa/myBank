@@ -28,12 +28,12 @@ const CategoriesPage: React.FC = () => {
   const handleDelete = async (id: number) => {
     await deleteCategory(id);
     toast("Category deleted successfully", {
+      className: "#",
       style: {
         background: "#4CAF50",
         color: "#FFFFFF",
       },
     });
-    window.location.reload();
   };
 
   return (
@@ -45,14 +45,14 @@ const CategoriesPage: React.FC = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-5">
         {categories.map((category) => (
-          <Card key={category.id} className="shadow-md">
+          <Card key={category.id} className="shadow-md flex justify-between">
             <CardHeader>
               <CardTitle className="text-xl font-semibold">{category.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-between mt-4">
+              <div className="flex justify-between mt-4 gap-5">
                 <Link href={`/categories/edit/${category.id}`}>
                   <Button variant="secondary" className="mr-2">
                     Edit

@@ -10,7 +10,7 @@ const headers = {
 
 
 export const useCategories = () => {
-    const { data, loading, error } = useFetch<{ member: Category[] }>(`${url}`);
+    const { data, loading, error, setData } = useFetch<{ member: Category[] }>(`${url}`);
 
     const createCategory = async (category: any) => {
         const body = JSON.stringify(category);
@@ -31,8 +31,18 @@ export const useCategories = () => {
     };
 
     const deleteCategory = async (id: number) => {
+    try {
         await axios.delete(`${url}/${id}`);
-    };
+        // Remove the category locally
+        setData((prev) => ({
+            ...prev!,
+            member: prev!.member.filter((category) => category.id !== id),
+        }));
+    } catch (err) {
+        console.error('Error deleting category:', err);
+    }
+};
+
 
     return {
         categories: data?.member || [],
