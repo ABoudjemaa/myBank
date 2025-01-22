@@ -52,8 +52,7 @@ export default function OperationForm({ operation }: { operation?: any }) {
         defaultValues: {
             label: operation?.label || "",
             amount: parseInt(operation?.amount) || 0,
-            date: operation?.date || "2025-01-22T10:01:22.714Z",
-            category: "/api/categories/1",
+            category:  `/api/categories/${operation?.category.id}` || "/api/categories/3",
         },
     })
 
@@ -113,7 +112,7 @@ export default function OperationForm({ operation }: { operation?: any }) {
                     )}
                 />
 
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="date"
                     render={({ field }) => (
@@ -128,7 +127,7 @@ export default function OperationForm({ operation }: { operation?: any }) {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
 
                 <FormField
                     control={form.control}
