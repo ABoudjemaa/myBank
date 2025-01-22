@@ -15,7 +15,6 @@ const CreateCategoryPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    //TODO: Implement the handleSubmit function
     e.preventDefault();
     try {
       await createCategory({ title });

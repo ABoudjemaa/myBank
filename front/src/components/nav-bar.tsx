@@ -10,7 +10,7 @@ const NavBar: React.FC = () => {
     const getLinkClass = (path: string) => {
         return cn(
             "text-gray-300 hover:text-white",
-            pathname === path && "text-white font-bold"
+            pathname.startsWith(path) && "text-white font-bold"
         );
     };
 
@@ -19,7 +19,7 @@ const NavBar: React.FC = () => {
             <div className="container mx-auto flex justify-between items-center max-w-6xl">
                 <div className="text-white text-lg font-bold">MyBank</div>
                 <div className="flex space-x-4">
-                    <Link href="/" className={getLinkClass("/")}>
+                    <Link href="/" className={pathname === "/" ? "text-white font-bold" : "text-gray-300 hover:text-white"}>
                         Home
                     </Link>
                     <Link href="/categories" className={getLinkClass("/categories")}>

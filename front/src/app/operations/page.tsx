@@ -1,25 +1,68 @@
-"use client"
-import { useOperations } from "@/hooks/useOperations";
+'use client';
 
+import { useOperations } from '@/hooks/useOperations';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
-const OperationsPage: React.FC = () => {
-  const { operations, loading, error } = useOperations();
+const OperationsList = () => {
+  const { operations, loading, error, deleteOperation } = useOperations();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">Error loading operations.</p>;
 
   return (
-    <div>
-      <h1>Operations</h1>
-      <ul>
+    <div className="container mx-auto py-6">
+      <div className='flex justify-between items-center p-5'>
+        <h1 className="text-2xl font-bold text-center">Operations</h1>
+        <div className="text-center">
+          <Button asChild>
+            <a href="/operations/create">Create New Operation</a>
+          </Button>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-5">
         {operations.map((operation) => (
-          <li key={operation.id}>
-            <strong>{operation.label}</strong>: {operation.amount} on {operation.date}
-          </li>
+          <Card key={operation.id} className="shadow-md">
+
+            <CardContent className="flex justify-between items-center p-5">
+              <h2 className='font-bold'>{operation.label}</h2>
+              <p className="text-sm text-gray-600">Amount: {operation.amount}€</p>
+              <p className="text-sm text-gray-500">Date: {operation.date}</p>
+              <div className='flex gap-2'>
+                <Button variant="link" asChild>
+                  <a href={`/operations/edit/${operation.id}`}>Edit</a>
+                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="destructive">Delete</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Confirm Deletion</DialogTitle>
+                    </DialogHeader>
+                    <p>Are you sure you want to delete this operation?</p>
+                    <DialogFooter>
+                      <Button variant="outline">Cancel</Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => deleteOperation(operation.id)}
+                      >
+                        Confirm
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardContent>
+
+          </Card>
+
         ))}
-      </ul>
+      </div>
+
     </div>
   );
 };
 
-export default OperationsPage;
+export default OperationsList;

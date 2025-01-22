@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -21,12 +22,15 @@ use Symfony\Component\Serializer\Attribute\Groups;
         new Get(
             normalizationContext: ['groups' => ['read:Operation:collection', 'read:Operation:item']]
         ),
-        new Post(),
+        new Post(
+            denormalizationContext: ['groups' => ['put:Operation', 'read:Operation:collection']]
+        ),
         new Put(
             denormalizationContext: ['groups' => ['put:Operation']]
-        ),new Patch(
-            denormalizationContext: ['groups' => ['put:Operation']]
+        ), new Patch(
+            denormalizationContext: ['groups' => ['put:Operation', 'read:Operation:collection']]
         ),
+        new Delete(),
     ],
     normalizationContext: ['groups' => ['read:Operation:collection']],
 )]
@@ -47,6 +51,7 @@ class Operation
     private ?float $amount = null;
 
     #[ORM\Column]
+    #[Groups(['read:Operation:collection'])]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'operations')]
