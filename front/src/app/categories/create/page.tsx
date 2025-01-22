@@ -9,16 +9,16 @@ import { useCategories } from '@/hooks/useCategories';
 import { Alert } from '@/components/ui/alert';
 
 const CreateCategoryPage: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const { categories, createCategory } = useCategories();
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>('');
+  const router = useRouter();
+  const { createCategory } = useCategories();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await createCategory({ title });
-      toast("Category added successfully", {
+      toast.success("Category added successfully", {
         style: {
           background: "#4CAF50",
           color: "#FFFFFF",

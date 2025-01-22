@@ -26,14 +26,18 @@ const CategoriesPage: React.FC = () => {
     );
 
   const handleDelete = async (id: number) => {
-    await deleteCategory(id);
-    toast("Category deleted successfully", {
-      className: "#",
-      style: {
-        background: "#4CAF50",
-        color: "#FFFFFF",
-      },
-    });
+    try {
+      await deleteCategory(id);
+      toast.success("Category deleted successfully", {
+        style: {
+          background: "#4CAF50",
+          color: "#FFFFFF",
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to delete category. Please try again.");
+    }
   };
 
   return (

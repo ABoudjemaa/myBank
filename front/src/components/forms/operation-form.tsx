@@ -18,18 +18,8 @@ import { useOperations } from "@/hooks/useOperations"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
+import { OperationFormSchema } from "@/components/forms/schemas/operation-form-schema"
 
-
-
-
-
-
-const formSchema = z.object({
-    "label": z.string().min(1).max(255),
-    "amount": z.coerce.number().gte(0).lte(9999),
-    "date": z.string(),
-    "category": z.string()
-})
 
 export default function OperationForm({ operation }: { operation?: any }) {
 
@@ -39,17 +29,17 @@ export default function OperationForm({ operation }: { operation?: any }) {
 
     const handleCreate = async (values: any) => {
         await createOperation(values);
-        toast("Operation Created successfully", {
+        toast.success("Operation Created successfully", {
             style: {
                 background: "#4CAF50",
                 color: "#FFFFFF",
             },
         });
     }
-    
+
     const handleUpdate = async (values: any) => {
         await editOperation(operation.id, values);
-        toast("Operation Updated successfully", {
+        toast.success("Operation Updated successfully", {
             style: {
                 background: "#4CAF50",
                 color: "#FFFFFF",
@@ -57,9 +47,8 @@ export default function OperationForm({ operation }: { operation?: any }) {
         });
     }
 
-
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof OperationFormSchema>>({
+        resolver: zodResolver(OperationFormSchema),
         defaultValues: {
             label: operation?.label || "",
             amount: parseInt(operation?.amount) || 0,
@@ -68,8 +57,7 @@ export default function OperationForm({ operation }: { operation?: any }) {
         },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        // e.preventDefault();
+    async function onSubmit(values: z.infer<typeof OperationFormSchema>) {
         try {
             if (operation) {
                 await handleUpdate(values);
@@ -125,22 +113,22 @@ export default function OperationForm({ operation }: { operation?: any }) {
                     )}
                 />
 
-                {/* <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date</FormLabel>
-                  <FormControl>
-                    <Input type="email" placeholder="Date" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )} 
-            />*/}
+                <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Date</FormLabel>
+                            <FormControl>
+                                <Input type="email" placeholder="Date" {...field} />
+                            </FormControl>
+                            <FormDescription>
+
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 <FormField
                     control={form.control}

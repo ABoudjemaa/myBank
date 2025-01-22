@@ -1,32 +1,33 @@
 'use client';
 import { useCategories } from '@/hooks/useCategories';
 import { useParams, useRouter } from 'next/navigation';
-import React, { use, useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input'; // shadcn Input component
-import { Button } from '@/components/ui/button'; // shadcn Button component
-import { Label } from '@/components/ui/label'; // shadcn Label component
-import { Alert } from '@/components/ui/alert'; // shadcn Alert component (optional for errors)
+import React, { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Alert } from '@/components/ui/alert';
 import { toast } from 'sonner';
 
 const EditCategoryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const router = useRouter();
   const { categories, updateCategory } = useCategories();
   const category = categories.find((cat) => cat.id === Number(id));
-
+  
   const [title, setTitle] = useState(category?.title || '');
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await updateCategory(Number(id), { title });
-      toast("Category updated successfully", {
+      toast.success("Category updated successfully" , {
         style: {
           background: "#4CAF50",
           color: "#FFFFFF",
         },
-      });
+      }
+      );
       router.push('/categories');
     } catch (err) {
       console.log(err);

@@ -19,7 +19,6 @@ function Page() {
                 console.error("Error fetching operation:", error);
             }
         };
-
         if (id) {
             fetchOperation();
         }
@@ -31,7 +30,7 @@ function Page() {
             {operation && (
                 <>
                     <div className="max-w-xl mx-auto">
-                        <OperationForm operation={operation}/>
+                        <OperationForm operation={operation} />
                     </div>
                 </>
             )}
