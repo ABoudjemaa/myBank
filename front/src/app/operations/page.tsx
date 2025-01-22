@@ -3,7 +3,7 @@
 import { useOperations } from '@/hooks/useOperations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 
 const OperationsList = () => {
   const { operations, loading, error, deleteOperation } = useOperations();
@@ -43,7 +43,9 @@ const OperationsList = () => {
                     </DialogHeader>
                     <p>Are you sure you want to delete this operation?</p>
                     <DialogFooter>
-                      <Button variant="outline">Cancel</Button>
+                      <DialogClose  className=' border border-gray-300 rounded-md px-3 py-1 mr-2'>
+                        Cancel
+                      </DialogClose>
                       <Button
                         variant="destructive"
                         onClick={() => deleteOperation(operation.id)}
