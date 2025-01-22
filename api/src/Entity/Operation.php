@@ -23,12 +23,13 @@ use Symfony\Component\Serializer\Attribute\Groups;
             normalizationContext: ['groups' => ['read:Operation:collection', 'read:Operation:item']]
         ),
         new Post(
-            denormalizationContext: ['groups' => ['put:Operation', 'read:Operation:collection']]
+            denormalizationContext: ['groups' => ['put:Operation']]
         ),
         new Put(
             denormalizationContext: ['groups' => ['put:Operation']]
-        ), new Patch(
-            denormalizationContext: ['groups' => ['put:Operation', 'read:Operation:collection']]
+        ),
+        new Patch(
+            denormalizationContext: ['groups' => ['put:Operation']]
         ),
         new Delete(),
     ],
@@ -47,7 +48,7 @@ class Operation
     private ?string $label = null;
 
     #[ORM\Column]
-    #[Groups(['read:Operation:collection'])]
+    #[Groups(['read:Operation:collection', 'put:Operation'])]
     private ?float $amount = null;
 
     #[ORM\Column]
@@ -56,8 +57,13 @@ class Operation
 
     #[ORM\ManyToOne(inversedBy: 'operations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:Operation:collection'])]
+    #[Groups(['read:Operation:collection', 'put:Operation'])]
     private ?Category $category = null;
+
+    public function __construct()
+    {
+        $this->date = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
