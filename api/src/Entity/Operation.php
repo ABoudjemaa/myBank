@@ -55,7 +55,7 @@ class Operation
     #[Groups(['read:Operation:collection'])]
     private ?\DateTimeImmutable $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'operations')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'operations')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:Operation:collection', 'put:Operation'])]
     private ?Category $category = null;

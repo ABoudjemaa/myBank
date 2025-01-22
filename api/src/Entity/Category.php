@@ -16,17 +16,17 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Operation:collection'])]
+    #[Groups(['read:Operation:collection', 'put:Operation'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Operation:collection'])]
+    #[Groups(['read:Operation:collection', 'put:Operation'])]
     private ?string $title = null;
 
     /**
      * @var Collection<int, Operation>
      */
-    #[ORM\OneToMany(targetEntity: Operation::class, mappedBy: 'category')]
+    #[ORM\OneToMany(targetEntity: Operation::class, mappedBy: 'category', cascade: ['persist'])]
     private Collection $operations;
 
     public function __construct()
