@@ -28,7 +28,7 @@ Avant de démarrer, assurez-vous d'avoir installé Docker et Docker Compose sur 
 Clonez ce projet sur votre machine locale :
 
 
-### 3. Accéder à l'application
+### 2. Accéder à l'application
 **Frontend (React)**
   Le Dockerfile dans le dossier frontend crée une image Docker pour l'application React.
   - Commandes principales :
