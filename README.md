@@ -41,7 +41,10 @@ git clone https://github.com/ABoudjemaa/myBank.git
    ```
 2. Set up the environment variables (.env):
    ```bash
+   APP_ENV=dev
+   APP_SECRET=
    DATABASE_URL="mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4"
+   CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
    ```
 3. Build the image :
    ```bash
@@ -62,13 +65,18 @@ git clone https://github.com/ABoudjemaa/myBank.git
    ```bash
    cd front
    ```
-2. Build the image :
+   ```
+2. Set up the environment variables (.env):
+   ```bash
+   NEXT_PUBLIC_API_BASE_URL="http://localhost:8082/api"
+   ```
+3. Build the image :
    ```bash
    docker build -t mybank-front .
    ```
-3. Run a container :
+4. Run a container :
    ```bash
    docker run -p 3001:3000 --name mybank-front-container  mybank-front:latest
    ```
 
-- Your app should be running on localhost:8082
+- Your app should be running on localhost:3001
