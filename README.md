@@ -46,11 +46,15 @@ git clone https://github.com/ABoudjemaa/myBank.git
    DATABASE_URL="mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4"
    CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
    ```
-3. Build the image :
+3. install dependencies :
+   ```bash
+   composer install
+   ```
+4. Build the image :
    ```bash
    docker-compose up
    ```
-4. Make migration :
+5. Make migration :
    ```bash
    docker exec -it api-backend-1 bash
    cd project
