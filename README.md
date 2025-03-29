@@ -65,7 +65,6 @@ git clone https://github.com/ABoudjemaa/myBank.git
    ```bash
    cd front
    ```
-   ```
 2. Set up the environment variables (.env):
    ```bash
    NEXT_PUBLIC_API_BASE_URL="http://localhost:8082/api"
