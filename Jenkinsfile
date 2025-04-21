@@ -19,7 +19,7 @@ pipeline {
         }
 
         stage("Continuous Delivery / Livraison Continue") {
-            agent { label "${AGENT_DOCKER}" }
+            agent { label "agent-docker" }
             steps {
                 sh 'ls'
                 // sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
