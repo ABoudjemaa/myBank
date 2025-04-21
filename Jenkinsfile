@@ -41,7 +41,7 @@ APP_SECRET=
 DATABASE_URL=mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4
 CORS_ALLOW_ORIGIN=^https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?$" > .env
                     '''
-                    // sh 'composer install'
+                    sh 'composer install'
                 }
             }
         }
