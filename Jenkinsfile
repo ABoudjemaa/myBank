@@ -25,7 +25,7 @@ pipeline {
                 dir('front') {
                     sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
                     sh 'ls'
-                    sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
+                    sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_front"
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" 
                     sh "docker push ${DOCKERHUB_USERNAME}/mybank_front"
                 }
