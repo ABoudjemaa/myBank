@@ -10,6 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+COPY .env .env
+
 # Copy the rest of the application code
 COPY . .
 
