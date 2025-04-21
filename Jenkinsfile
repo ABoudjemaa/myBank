@@ -1,5 +1,5 @@
 pipeline {
-    agent none 
+    agent none
 
     stages {
         stage('Clone Repository') {
@@ -18,20 +18,20 @@ pipeline {
             }
         }
 
-        stage("Continuous Delivery / Livraison Continue") {
-            agent { label "agent-docker" }
+        stage('Continuous Delivery / Livraison Continue') {
+            agent { label "${AGENT_DOCKER}" }
             steps {
                 dir('front') {
                     sh 'ls'
+                    sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
+                    // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
+                    sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" 
+                    sh "docker push ${DOCKERHUB_USERNAME}/mybank_front"
                 }
-                
-                // sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
-                // sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
-                // sh "docker push ${DOCKERHUB_USERNAME}/next_cicdcd"
             }
         }
 
-        stage('Clone Backend Repository') {  
+        stage('Clone Backend Repository') {
             agent { node { label 'mybank-backend-agent' } }
             steps {
                 git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
