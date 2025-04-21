@@ -63,7 +63,6 @@ pipeline {
                         DATABASE_URL=${DATABASE_URL}
                         CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}\" > .env
                     """
-                    sh 'composer install'
                     sh 'docker-compose up'
                     // sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_api"
                     // sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}"
