@@ -21,7 +21,10 @@ pipeline {
         stage("Continuous Delivery / Livraison Continue") {
             agent { label "agent-docker" }
             steps {
-                sh 'ls'
+                dir('front') {
+                    sh 'ls'
+                }
+                
                 // sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
                 // sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
                 // sh "docker push ${DOCKERHUB_USERNAME}/next_cicdcd"
