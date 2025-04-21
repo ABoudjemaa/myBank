@@ -14,6 +14,7 @@ pipeline {
             steps {
                 dir('front') {
                     sh 'npm install'
+                    sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
                 }
             }
         }
@@ -24,7 +25,6 @@ pipeline {
                 dir('front') {
                     sh 'ls'
                     sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
-                    // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" 
                     sh "docker push ${DOCKERHUB_USERNAME}/mybank_front"
                 }
