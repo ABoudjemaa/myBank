@@ -23,6 +23,7 @@ pipeline {
             agent { label "${AGENT_DOCKER}" }
             steps {
                 dir('front') {
+                    sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
                     sh 'ls'
                     sh "docker build . -t ${DOCKERHUB_USERNAME}/next_cicdcd"
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" 
