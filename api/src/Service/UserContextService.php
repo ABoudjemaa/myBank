@@ -20,20 +20,6 @@ class UserContextService
         return $this->security->getUser();
     }
 
-    public function isAdmin(): bool
-    {
-        return $this->security->isGranted('ROLE_ADMIN');
-    }
-    public function isLearner(): bool
-    {
-        return $this->security->isGranted('ROLE_LEARNER');
-    }
-    public function isFormative(): bool
-    {
-
-        return $this->security->isGranted('ROLE_FORMATIVE');
-    }
-
     public function getAuthenticatedUser(): User
     {
         $userEmail = $this->getUser()->getUserIdentifier();

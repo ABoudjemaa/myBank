@@ -11,6 +11,8 @@ use App\Controller\MeController;
 use App\Dto\UserRegisterInput;
 use App\Repository\UserRepository;
 use App\State\UserRegistrationProcessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -87,6 +89,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     #[ORM\Column]
     #[Groups(['user.roles'])]
     private array $roles = [];
+
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'createdBy', orphanRemoval: true)]
+    #[Groups(['user.categories'])]
+    private Collection $categories;
+
+    /**
+     * @var Collection<int, Operation>
+     */
+    #[ORM\OneToMany(targetEntity: Operation::class, mappedBy: 'createdBy')]
+    #[Groups(['user.operations'])]
+    private Collection $operations;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->operations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,5 +202,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     public function getUserIdentifier(): string
     {
         return (string)$this->email;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getCreatedBy() === $this) {
+                $category->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Operation>
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    public function addOperation(Operation $operation): static
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations->add($operation);
+            $operation->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOperation(Operation $operation): static
+    {
+        if ($this->operations->removeElement($operation)) {
+            // set the owning side to null (unless already changed)
+            if ($operation->getCreatedBy() === $this) {
+                $operation->setCreatedBy(null);
+            }
+        }
+
+        return $this;
     }
 }

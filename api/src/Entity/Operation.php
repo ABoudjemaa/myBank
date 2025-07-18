@@ -40,25 +40,30 @@ class Operation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:Operation:collection'])]
+    #[Groups(['operation.id'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:Operation:collection', 'put:Operation'])]
+    #[Groups(['operation.label'])]
     private ?string $label = null;
 
     #[ORM\Column]
-    #[Groups(['read:Operation:collection', 'put:Operation'])]
+    #[Groups(['operation.amount'])]
     private ?float $amount = null;
 
     #[ORM\Column]
-    #[Groups(['read:Operation:collection'])]
+    #[Groups(['operation.date'])]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'operations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:Operation:collection', 'put:Operation'])]
+    #[Groups(['operation.category'])]
     private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'operations')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['operation.createdBy'])]
+    private ?User $createdBy = null;
 
     public function __construct()
     {
@@ -114,6 +119,18 @@ class Operation
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): static
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }
