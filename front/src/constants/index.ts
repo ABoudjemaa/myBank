@@ -1,0 +1,1 @@
+export const ROLE_USER = "ROLE_USER";

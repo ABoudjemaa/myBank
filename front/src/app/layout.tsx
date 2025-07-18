@@ -12,7 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body >
         <NavBar />
-        <main className="max-w-6xl m-auto">
+        <main className="">
           {children}
         </main>
         <Toaster />
