@@ -28,8 +28,8 @@ export function AuthWrapper({
     if (user) return null;
 
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10 min-w-[300px]">
-            <div className="flex w-full items-center max-w-sm flex-col gap-6 min-w-[300px]">
+        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10 min-w-[400px]">
+            <div className="flex w-full items-center max-w-sm flex-col gap-6 min-w-[400px]">
                 <Logo/>
                 <div className={"flex flex-col gap-6 w-full"}>
                     <Card>
