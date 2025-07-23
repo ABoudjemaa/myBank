@@ -127,12 +127,15 @@ pipeline {
                 ]) {
                     sh """
                         ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
-                        ls
+                        docker stop mybank_api || true &&
+                        docker rm mybank_api || true &&
+                        docker run -d --name mybank_api -p 8082:80 ${DOCKERHUB_USERNAME}/mybank_api
                         '
                     """
                 }
             }
         }
+
         
     }
 }
