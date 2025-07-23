@@ -72,7 +72,7 @@ pipeline {
         // }
 
         stage('Install & Run Backend') {
-            agent { node { label 'mybank-backend-agent' } }
+            agent { node { label 'backend-agent' } }
             steps {
                 dir('api') {
                     sh """
