@@ -44,6 +44,10 @@ pipeline {
                     sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
                 ]) {
                     sh """
+    ssh-keyscan -H \$REMOTE_HOST >> ~/.ssh/known_hosts
+    ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST "ls"
+"""
+                    sh """
                     ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST \\
                     "ls"
                     """
