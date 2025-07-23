@@ -10,7 +10,7 @@ pipeline {
         }
 
         stage('Install & Run Frontend') {
-            agent { node { label 'mybank-front-agent' } }
+            agent { node { label 'front-agent' } }
             steps {
                 dir('front') {
                     sh 'npm install'
