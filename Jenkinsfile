@@ -37,9 +37,11 @@ pipeline {
                     sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
                 ]) {
                     sh """
-                    ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
-                    docker pull ${DOCKERHUB_USERNAME}/mybank_front
-                    '
+                        mkdir -p ~/.ssh
+                        ssh-keyscan -H ${REMOTE_HOST} >> ~/.ssh/known_hosts
+                        ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
+                        docker pull ${DOCKERHUB_USERNAME}/mybank_front
+                        '
                     """
                 }
             }
