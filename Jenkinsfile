@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+    environment {
+        REMOTE_USER    = 'root'
+        REMOTE_HOST    = '46.101.90.218'
+        REPO           = 'git@github.com:ABoudjemaa/api_platform.git'
+        DEST_FOLDER    = 'api_platform'
+    }
+
     stages {
         // stage('Clone Repository') {
         //     agent { label 'front-agent' }
