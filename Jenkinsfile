@@ -169,7 +169,6 @@ pipeline {
                             --name mybank_api \\
                             --network app-network \\
                             -e APP_ENV=prod \\
-                            -e DATABASE_URL=mysql://root:root@api-database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4 \\
                             -e JWT_SECRET_KEY=/var/www/project/config/jwt/private.pem \\
                             -e JWT_PUBLIC_KEY=/var/www/project/config/jwt/public.pem \\
                             -e JWT_PASSPHRASE=93e0947637e070f643c0de5dd8bc8e397b173b7a06842236b015bdb394d46a29 \\
