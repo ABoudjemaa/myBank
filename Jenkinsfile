@@ -147,7 +147,7 @@ pipeline {
                           -e MYSQL_ROOT_PASSWORD=root \
                           -e MYSQL_DATABASE=mybank-api-database \
                           -p 3306:3306 \
-                          mysql:8.0
+                          mysql:9.0
                         '
                     """
                 }
