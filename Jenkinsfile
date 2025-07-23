@@ -108,8 +108,7 @@ pipeline {
                         CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
                         JWT_SECRET_KEY=/var/www/project/config/jwt/private.pem \\
                         JWT_PUBLIC_KEY=/var/www/project/config/jwt/public.pem \\
-                        JWT_PASSPHRASE=93e0947637e070f643c0de5dd8bc8e397b173b7a06842236b015bdb394d46a29
-                        \" > .env
+                        JWT_PASSPHRASE=93e0947637e070f643c0de5dd8bc8e397b173b7a06842236b015bdb394d46a29\" > .env
                     """
                     sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_api"
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
