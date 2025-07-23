@@ -14,7 +14,6 @@ interface AuthState {
     token: string | null;
     user: User | null;
     error: string | null;
-    persist: boolean;
     login: (email: string, password: string) => Promise<User | null>;
     refresh: () => Promise<string | null>;
     refreshOnReload: () => Promise<string | null>;
@@ -25,7 +24,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     token: null,
     user: null,
     error: null,
-    persist: localStorage.getItem("persist") === "true" || false,
 
     login: async (email, password) => {
         set({error: null});
@@ -44,8 +42,7 @@ export const useAuthStore = create<AuthState>((set) => ({
                 return null;
             }
 
-            localStorage.setItem("persist", "true");
-            set({token, user, error: null, persist: true});
+            set({token, user, error: null});
 
             return user;
         } catch (error: any) {
@@ -63,7 +60,6 @@ export const useAuthStore = create<AuthState>((set) => ({
             const newToken = response.data?.token;
 
             if (!newToken) {
-                localStorage.setItem("persist", "false");
                 set({token: null, user: null, error: 'No new token received during refresh'});
                 return null;
             }
@@ -72,7 +68,6 @@ export const useAuthStore = create<AuthState>((set) => ({
             return newToken;
         } catch (error: any) {
             console.error("Token refresh failed:", error);
-            localStorage.setItem("persist", "false");
             set({token: null, user: null, error: error.message || 'Failed to refresh token'});
             return null;
         }
@@ -85,7 +80,6 @@ export const useAuthStore = create<AuthState>((set) => ({
             const newToken = response.data?.token;
 
             if (!newToken) {
-                localStorage.setItem("persist", "false");
                 set({token: null, user: null});
                 return null;
             }
@@ -101,7 +95,6 @@ export const useAuthStore = create<AuthState>((set) => ({
             return newToken;
         } catch (error: any) {
             console.error("Token refresh failed:", error);
-            localStorage.setItem("persist", "false");
             set({token: null, user: null, error: error.message || 'Token refresh failed'});
             return null;
         }
@@ -115,8 +108,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             console.error("Logout failed:", error);
             set({error: error.message || 'Logout failed. Please try again later.'});
         } finally {
-            localStorage.setItem("persist", "false");
-            set({token: null, user: null, error: null, persist: false});
+            set({token: null, user: null, error: null});
         }
     },
 }));
