@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         stage('Clone Repository') {
-            agent { node { label 'front-agent' } }
+            // agent { node { label 'front-agent' } }
             steps {
                 git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
             }
