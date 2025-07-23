@@ -1,13 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        REMOTE_USER    = 'root'
-        REMOTE_HOST    = '46.101.90.218'
-        REPO           = 'git@github.com:ABoudjemaa/api_platform.git'
-        DEST_FOLDER    = 'api_platform'
-    }
-
     stages {
         // stage('Clone Repository') {
         //     agent { label 'front-agent' }
@@ -48,7 +41,7 @@ pipeline {
     ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST "ls"
 """
                     sh """
-                    ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST \\
+                    ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} \\
                     "docker pull ${DOCKERHUB_USERNAME}/mybank_front"
                     """
                 }
