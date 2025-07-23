@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         stage('Clone Repository') {
-            // agent { label 'front-agent' }
+            agent { label 'front-agent' }
             steps {
                 git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
             }
@@ -19,17 +19,17 @@ pipeline {
             }
         }
 
-        // stage('Continuous Delivery / Livraison Continue') {
-        //     agent { label "${AGENT_DOCKER}" }
-        //     steps {
-        //         dir('front') {
-        //             sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
-        //             sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_front"
-        //             sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}"
-        //             sh "docker push ${DOCKERHUB_USERNAME}/mybank_front"
-        //         }
-        //     }
-        // }
+        stage('Continuous Delivery / Livraison Continue') {
+            agent { label "${AGENT_DOCKER}" }
+            steps {
+                dir('front') {
+                    sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
+                    sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_front"
+                    sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}"
+                    sh "docker push ${DOCKERHUB_USERNAME}/mybank_front"
+                }
+            }
+        }
 
         // stage('Clone Backend Repository') {
         //     agent { node { label 'mybank-backend-agent' } }
