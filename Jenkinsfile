@@ -98,7 +98,7 @@ pipeline {
                     """
                     sh "docker build . -t ${DOCKERHUB_USERNAME}/myBank_api"
                     sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
-                    sh "docker push ${DOCKERHUB_USERNAME}/myBank_api"
+                    sh "docker push ${DOCKERHUB_USERNAME}/mybank_api"
                 }
             }
         }
