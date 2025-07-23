@@ -129,7 +129,14 @@ pipeline {
                         ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
                         docker stop mybank_api || true &&
                         docker rm mybank_api || true &&
-                        docker run -d --name mybank_api -p 8083:80 ${DOCKERHUB_USERNAME}/mybank_api
+                        docker network create app-network
+                        docker run -d \
+                          --name mybank_api \
+                          --network app-network \
+                          -e APP_ENV=prod \
+                          -e DATABASE_URL=mysql://root:root@api-database:3306/mybank-api-database \
+                          -p 8083:80 \
+                          aboudjemaa/mybank-api:latest
                         '
                     """
                 }
@@ -139,3 +146,6 @@ pipeline {
         
     }
 }
+
+
+                        // docker run -d --name mybank_api -p 8083:80 ${DOCKERHUB_USERNAME}/mybank_api
