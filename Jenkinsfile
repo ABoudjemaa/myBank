@@ -131,6 +131,30 @@ pipeline {
             }
         }
 
+        stage('Run MySQL Database') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
+                ]) {
+                    sh """
+                        ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
+                        docker stop api-database || true &&
+                        docker rm api-database || true &&
+                        docker network create app-network || true
+                        docker run -d \
+                          --name api-database \
+                          --network app-network \
+                          -e MYSQL_ROOT_PASSWORD=root \
+                          -e MYSQL_DATABASE=mybank-api-database \
+                          -p 3306:3306 \
+                          mysql:8.0
+                        '
+                    """
+                }
+            }
+        }
+
+
         stage('Run Symfony Api') {
             steps {
                 withCredentials([
