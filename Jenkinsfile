@@ -29,7 +29,7 @@ pipeline {
 //                     sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
 //                 }
 //             }
-        }
+        // }
 
         // stage('Continuous Delivery / Livraison Continue') {
         //     agent { label "${AGENT_DOCKER}" }
