@@ -1,22 +1,34 @@
 pipeline {
-    agent any
-
+    agent { label 'front-agent' }
     stages {
-        stage('Clone Repository') {
-            // agent { node { label 'front-agent' } }
+        stage('Test') {
             steps {
-                git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+                echo 'Agent is working!'
             }
         }
+    }
+}
 
-        stage('Install & Run Frontend') {
-            agent { node { label 'front-agent' } }
-            steps {
-                dir('front') {
-                    sh 'npm install'
-                    sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
-                }
-            }
+
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Clone Repository') {
+//             // agent { node { label 'front-agent' } }
+//             steps {
+//                 git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+//             }
+//         }
+
+//         stage('Install & Run Frontend') {
+//             agent { node { label 'front-agent' } }
+//             steps {
+//                 dir('front') {
+//                     sh 'npm install'
+//                     sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
+//                 }
+//             }
         }
 
         // stage('Continuous Delivery / Livraison Continue') {
