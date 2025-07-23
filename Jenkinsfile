@@ -136,7 +136,7 @@ pipeline {
                           -e APP_ENV=prod \
                           -e DATABASE_URL=mysql://root:root@api-database:3306/mybank-api-database \
                           -p 8083:80 \
-                          aboudjemaa/mybank-api:latest
+                          ${DOCKERHUB_USERNAME}/mybank_api:latest
                         '
                     """
                 }
