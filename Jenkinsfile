@@ -69,36 +69,36 @@ pipeline {
         //     }
         // }
 
-        // stage('Install & Run Backend') {
-        //     agent { node { label 'mybank-backend-agent' } }
-        //     steps {
-        //         dir('api') {
-        //             sh """
-        //                 echo \"APP_ENV=${APP_ENV}
-        //                 APP_SECRET=${APP_SECRET}
-        //                 DATABASE_URL=${DATABASE_URL}
-        //                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}\" > .env
-        //             """
-        //             sh 'composer install'
-        //         }
-        //     }
-        // }
+        stage('Install & Run Backend') {
+            agent { node { label 'mybank-backend-agent' } }
+            steps {
+                dir('api') {
+                    sh """
+                        echo \"APP_ENV=${APP_ENV}
+                        APP_SECRET=${APP_SECRET}
+                        DATABASE_URL=${DATABASE_URL}
+                        CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}\" > .env
+                    """
+                    sh 'composer install'
+                }
+            }
+        }
 
-        // stage('Continuous Delivery / Livraison Continue api symfony') {
-        //     agent { label "${AGENT_DOCKER}" }
-        //     steps {
-        //         dir('api') {
-        //             sh """
-        //                 echo \"APP_ENV=${APP_ENV}
-        //                 APP_SECRET=${APP_SECRET}
-        //                 DATABASE_URL=${DATABASE_URL}
-        //                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}\" > .env
-        //             """
-        //             sh "docker build . -t ${DOCKERHUB_USERNAME}/myBank_api"
-        //             sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
-        //             sh "docker push ${DOCKERHUB_USERNAME}/myBank_api"
-        //         }
-        //     }
-        // }
+        stage('Continuous Delivery / Livraison Continue api symfony') {
+            agent { label "${AGENT_DOCKER}" }
+            steps {
+                dir('api') {
+                    sh """
+                        echo \"APP_ENV=${APP_ENV}
+                        APP_SECRET=${APP_SECRET}
+                        DATABASE_URL=${DATABASE_URL}
+                        CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}\" > .env
+                    """
+                    sh "docker build . -t ${DOCKERHUB_USERNAME}/myBank_api"
+                    sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}" // Créer un PAT sur Docker Hub : https://app.docker.com/settings/personal-access-tokens
+                    sh "docker push ${DOCKERHUB_USERNAME}/myBank_api"
+                }
+            }
+        }
     }
 }
