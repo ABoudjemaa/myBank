@@ -31,18 +31,15 @@ pipeline {
         //     }
         // }
 
-        stage('Generate lexik jwt keypair') {
+        stage('Pull Front Image on the server') {
             steps {
                 withCredentials([
                     sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
                 ]) {
                     sh """
-    ssh-keyscan -H \$REMOTE_HOST >> ~/.ssh/known_hosts
-    ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST "ls"
-"""
-                    sh """
-                    ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} \\
-                    "docker pull ${DOCKERHUB_USERNAME}/mybank_front"
+                    ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
+                    docker pull ${DOCKERHUB_USERNAME}/mybank_front
+                    '
                     """
                 }
             }
@@ -54,7 +51,7 @@ pipeline {
             sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
         ]) {
             sh """
-                ssh -i \$SSH_KEY \$REMOTE_USER@\$REMOTE_HOST '
+                ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
                 docker stop mybank_front || true &&
                 docker rm mybank_front || true &&
                 docker run -d --name mybank_front -p 3000:3000 ${DOCKERHUB_USERNAME}/mybank_front
