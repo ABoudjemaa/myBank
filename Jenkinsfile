@@ -64,12 +64,12 @@ pipeline {
         }
 
 
-        // stage('Clone Backend Repository') {
-        //     agent { node { label 'mybank-backend-agent' } }
-        //     steps {
-        //         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
-        //     }
-        // }
+        stage('Clone Backend Repository') {
+            agent { node { label 'mybank-backend-agent' } }
+            steps {
+                git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+            }
+        }
 
         stage('Install & Run Backend') {
             agent { node { label 'backend-agent' } }
