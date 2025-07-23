@@ -181,6 +181,22 @@ pipeline {
             }
         }
 
+
+        stage('Run Migrations on Symfony Api') {
+    steps {
+        withCredentials([
+            sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
+        ]) {
+            sh """
+                ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
+                  sleep 10 && docker exec mybank_api php /var/www/project/bin/console doctrine:migrations:migrate --no-interaction
+                '
+            """
+        }
+    }
+}
+
+
         
     }
 }
