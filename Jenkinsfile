@@ -65,7 +65,7 @@ pipeline {
 
 
         stage('Clone Backend Repository') {
-            agent { node { label 'mybank-backend-agent' } }
+            agent { node { label 'backend-agent' } }
             steps {
                 git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
             }
