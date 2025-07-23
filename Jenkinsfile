@@ -86,6 +86,17 @@ pipeline {
             }
         }
 
+        stage('Generate lexik jwt keypair') {
+            steps {
+                dir('api/config/jwt') {
+                    sh 'mkdir -p .'
+                    sh 'openssl genrsa -out private.pem 4096'
+                    sh 'openssl rsa -pubout -in private.pem -out public.pem'
+                }
+            }
+        }
+
+
         stage('Continuous Delivery / Livraison Continue api symfony') {
             agent { label "${AGENT_DOCKER}" }
             steps {
