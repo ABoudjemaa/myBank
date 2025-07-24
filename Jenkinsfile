@@ -85,7 +85,7 @@ pipeline {
                         JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
                     """
                     sh 'composer install'
-                    sh 'php /home/jenkins/workspace/mybank-pipeline/api/bin/console lexik:jwt:generate-keypair'
+                    sh 'php bin/console lexik:jwt:generate-keypair'
                 }
             }
         }
