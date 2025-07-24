@@ -71,30 +71,80 @@ pipeline {
         //     }
         // }
 
-        stage('Install Backend') {
-            agent { node { label 'backend-agent' } }
-            steps {
-                dir('api') {
-                    sh """
-                        echo \"APP_ENV=${APP_ENV}
-                        APP_SECRET=${APP_SECRET}
-                        DATABASE_URL=${DATABASE_URL}
-                        CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
-                        JWT_SECRET_KEY=${JWT_SECRET_KEY}
-                        JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-                        JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
-                    """
-                    sh 'composer install'
-                    sh 'php bin/phpunit tests/DatabaseTest.php'
-                    sh '''
-                        if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
-                          php bin/console lexik:jwt:generate-keypair
-                        fi
-                    '''
-                }
-                    stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
-            }
+        // stage('Install Backend') {
+        //     agent { node { label 'backend-agent' } }
+        //     steps {
+        //         dir('api') {
+        //             sh """
+        //                 echo \"APP_ENV=${APP_ENV}
+        //                 APP_SECRET=${APP_SECRET}
+        //                 DATABASE_URL=${DATABASE_URL}
+        //                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+        //                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
+        //                 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+        //                 JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
+        //             """
+        //             sh 'composer install'
+        //             sh 'php bin/phpunit tests/DatabaseTest.php'
+        //             sh '''
+        //                 if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+        //                   php bin/console lexik:jwt:generate-keypair
+        //                 fi
+        //             '''
+        //         }
+        //             stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
+        //     }
+        // }
+
+
+
+        stage('Start MySQL for Tests') {
+    agent { node { label 'backend-agent' } }
+    steps {
+        sh '''
+            docker stop test-db || true
+            docker rm test-db || true
+            docker run -d --name test-db \
+              -e MYSQL_ROOT_PASSWORD=root \
+              -e MYSQL_DATABASE=mybank_test \
+              -p 3307:3306 \
+              mysql:8.0
+        '''
+    }
+}
+
+
+
+stage('Install Backend') {
+    agent { node { label 'backend-agent' } }
+    steps {
+        dir('api') {
+            sh """
+                echo \"APP_ENV=test
+                APP_SECRET=${APP_SECRET}
+                DATABASE_URL=mysql://root:root@127.0.0.1:3307/mybank_test
+                CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+                JWT_SECRET_KEY=${JWT_SECRET_KEY}
+                JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+                JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
+            """
+            sh 'composer install'
+            sh 'php bin/console doctrine:database:create --env=test --if-not-exists'
+            sh 'php bin/console doctrine:migrations:migrate --env=test --no-interaction'
+
+            sh 'php bin/phpunit'
+
+            sh '''
+                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+                  php bin/console lexik:jwt:generate-keypair
+                fi
+            '''
         }
+        stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
+    }
+}
+
+
 
 
         stage('Continuous Delivery / Livraison Continue api symfony') {
