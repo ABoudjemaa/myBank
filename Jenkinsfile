@@ -64,35 +64,35 @@ pipeline {
         // }
 
 
-        stage('Clone Backend Repository') {
-            agent { node { label 'backend-agent' } }
-            steps {
-                git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
-            }
-        }
+        // stage('Clone Backend Repository') {
+        //     agent { node { label 'backend-agent' } }
+        //     steps {
+        //         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+        //     }
+        // }
 
-        stage('Install Backend') {
-            agent { node { label 'backend-agent' } }
-            steps {
-                dir('api') {
-                    sh """
-                        echo \"APP_ENV=${APP_ENV}
-                        APP_SECRET=${APP_SECRET}
-                        DATABASE_URL=${DATABASE_URL}
-                        CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
-                        JWT_SECRET_KEY=${JWT_SECRET_KEY}
-                        JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-                        JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
-                    """
-                    sh 'composer install'
-                    sh '''
-                        if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
-                          php bin/console lexik:jwt:generate-keypair
-                        fi
-                    '''
-                }
-            }
-        }
+        // stage('Install Backend') {
+        //     agent { node { label 'backend-agent' } }
+        //     steps {
+        //         dir('api') {
+        //             sh """
+        //                 echo \"APP_ENV=${APP_ENV}
+        //                 APP_SECRET=${APP_SECRET}
+        //                 DATABASE_URL=${DATABASE_URL}
+        //                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+        //                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
+        //                 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+        //                 JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
+        //             """
+        //             sh 'composer install'
+        //             sh '''
+        //                 if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+        //                   php bin/console lexik:jwt:generate-keypair
+        //                 fi
+        //             '''
+        //         }
+        //     }
+        // }
 
         // stage('Generate lexik jwt keypair') {
         //     agent { node { label 'backend-agent' } }
