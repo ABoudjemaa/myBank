@@ -95,15 +95,6 @@ pipeline {
             }
         }
 
-        // stage('Generate lexik jwt keypair') {
-        //     agent { node { label 'backend-agent' } }
-        //     steps {
-        //         dir('api') {
-        //             sh 'php /home/jenkins/workspace/mybank-pipeline/api/bin/console lexik:jwt:generate-keypair'
-        //         }
-        //     }
-        // }
-
 
         stage('Continuous Delivery / Livraison Continue api symfony') {
             agent { label "${AGENT_DOCKER}" }
@@ -183,18 +174,18 @@ pipeline {
 
 
         stage('Run Migrations on Symfony Api') {
-    steps {
-        withCredentials([
-            sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
-        ]) {
-            sh """
-                ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
-                  sleep 10 && docker exec mybank_api php /var/www/project/bin/console doctrine:migrations:migrate --no-interaction
-                '
-            """
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: 'ssh-root-level-up-api-server', keyFileVariable: 'SSH_KEY')
+                ]) {
+                    sh """
+                        ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
+                          sleep 10 && docker exec mybank_api php /var/www/project/bin/console doctrine:migrations:migrate --no-interaction
+                        '
+                    """
+                }
+            }
         }
-    }
-}
 
 
         
