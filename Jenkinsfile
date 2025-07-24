@@ -85,18 +85,19 @@ pipeline {
                         JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
                     """
                     sh 'composer install'
-                }
-            }
-        }
-
-        stage('Generate lexik jwt keypair') {
-            agent { node { label 'backend-agent' } }
-            steps {
-                dir('api') {
                     sh 'php /home/jenkins/workspace/mybank-pipeline/api/bin/console lexik:jwt:generate-keypair'
                 }
             }
         }
+
+        // stage('Generate lexik jwt keypair') {
+        //     agent { node { label 'backend-agent' } }
+        //     steps {
+        //         dir('api') {
+        //             sh 'php /home/jenkins/workspace/mybank-pipeline/api/bin/console lexik:jwt:generate-keypair'
+        //         }
+        //     }
+        // }
 
 
         stage('Continuous Delivery / Livraison Continue api symfony') {
