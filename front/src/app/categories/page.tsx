@@ -16,37 +16,35 @@ import {
 } from '@/components/ui/alert-dialog';
 import {toast} from 'sonner';
 import {useGetCategories} from "@/hooks/get/use-get-categories";
+import {useDelete} from "@/hooks/use-delete";
+import Loading from "@/components/loading";
+import Error from "@/components/Error";
 
 const CategoriesPage: React.FC = () => {
     const {categories, loading, error} = useGetCategories();
+    const {deleteItem, loading: deleteLoading} = useDelete()
 
     if (loading)
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <p className="text-lg font-semibold">Loading...</p>
-            </div>
-        );
+        return <Loading/>;
 
     if (error)
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <p className="text-lg font-semibold text-red-500">Error: {error.message}</p>
-            </div>
-        );
+        return <Error error={error}/>;
 
     const handleDelete = async (id: number) => {
-        try {
-            // await deleteCategory(id);
-            toast.success("Category deleted successfully", {
-                style: {
-                    background: "#4CAF50",
-                    color: "#FFFFFF",
-                },
-            });
-        } catch (err) {
-            console.log(err);
-            toast.error("Failed to delete category. Please try again.");
-        }
+
+        deleteItem(`/categories/${id}`)
+            .then(() => {
+                toast.success("Category deleted successfully", {
+                    style: {
+                        background: "#4CAF50",
+                        color: "#FFFFFF",
+                    },
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                toast.error("Failed to delete category. Please try again.");
+            })
     };
 
     return (
@@ -54,7 +52,7 @@ const CategoriesPage: React.FC = () => {
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold">Categories</h1>
                 <Link href="/categories/create">
-                    <Button>+ Create New Category</Button>
+                    <Button disabled={deleteLoading}>+ Create New Category</Button>
                 </Link>
             </div>
 
@@ -67,13 +65,13 @@ const CategoriesPage: React.FC = () => {
                         <CardContent>
                             <div className="flex justify-between mt-4 gap-5">
                                 <Link href={`/categories/edit/${category.id}`}>
-                                    <Button variant="secondary" className="mr-2">
+                                    <Button variant="secondary" className="mr-2" disabled={deleteLoading}>
                                         Edit
                                     </Button>
                                 </Link>
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
-                                        <Button variant="destructive">Delete</Button>
+                                        <Button variant="destructive" disabled={deleteLoading}>Delete</Button>
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogTitle></AlertDialogTitle>
@@ -84,6 +82,7 @@ const CategoriesPage: React.FC = () => {
                                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                                             <AlertDialogAction
                                                 onClick={() => handleDelete(category.id)}
+                                                disabled={deleteLoading}
                                             >
                                                 Confirm
                                             </AlertDialogAction>
