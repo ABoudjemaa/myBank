@@ -92,7 +92,7 @@ pipeline {
         stage('Generate lexik jwt keypair') {
             steps {
                 dir('api') {
-                    sh 'php /var/www/project/bin/console lexik:jwt:generate-keypair'
+                    sh 'php /home/jenkins/workspace/mybank-pipeline/api/bin/console lexik:jwt:generate-keypair'
                 }
             }
         }
