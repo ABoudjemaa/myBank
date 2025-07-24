@@ -1,7 +1,6 @@
 api_platform:
     title: Hello API Platform
-    version: 1.0.0
-    enable_swagger_ui: '%kernel.debug%'  # disables when APP_DEBUG is false
+    version: 1.0.0 # disables when APP_DEBUG is false
     defaults:
         stateless: true
         cache_headers:
