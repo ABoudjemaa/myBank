@@ -85,7 +85,11 @@ pipeline {
                         JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
                     """
                     sh 'composer install'
-                    sh 'php bin/console lexik:jwt:generate-keypair'
+                    sh '''
+                        if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+                          php bin/console lexik:jwt:generate-keypair
+                        fi
+                    '''
                 }
             }
         }
