@@ -90,6 +90,7 @@ pipeline {
         }
 
         stage('Generate lexik jwt keypair') {
+            agent { node { label 'backend-agent' } }
             steps {
                 dir('api') {
                     sh 'php /home/jenkins/workspace/mybank-pipeline/api/bin/console lexik:jwt:generate-keypair'
