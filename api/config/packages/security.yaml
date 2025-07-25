@@ -30,8 +30,8 @@ security:
 #            refresh_jwt:
 #                check_path: /api/token/refresh
 #                provider : app_user_provider
-            logout:
-                path: api_token_invalidate
+#            logout:
+#                path: api_token_invalidate
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
