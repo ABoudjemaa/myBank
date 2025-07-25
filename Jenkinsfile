@@ -71,13 +71,23 @@ pipeline {
 //             }
 //         }
 
-        stage('Backend Pipeline') {
-            steps {
-                script {
-                    load 'jenkins/backend.groovy'
+            stage('Backend install Pipeline') {
+                agent { node { label 'backend-agent' } }
+                steps {
+                    script {
+                        load 'jenkins/backend_install.groovy'
+                    }
                 }
             }
-        }
+
+            stage('Backend build image Pipeline') {
+                agent { label "${AGENT_DOCKER}" }
+                steps {
+                    script {
+                        load 'jenkins/backend_build_image.groovy'
+                    }
+                }
+            }
 
 
 //         stage('Clone Backend Repository') {
