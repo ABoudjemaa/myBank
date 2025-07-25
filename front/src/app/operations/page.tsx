@@ -1,12 +1,14 @@
 'use client';
 
-import { useOperations } from '@/hooks/useOperations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import {useGetOperations} from "@/hooks/get/use-get-operations";
+import {formatDate} from "@/lib/utils";
+
 
 const OperationsList = () => {
-  const { operations, loading, error, deleteOperation } = useOperations();
+  const { operations, loading, error } = useGetOperations();
 
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (error) return <p className="text-center text-red-500">Error loading operations.</p>;
@@ -22,13 +24,13 @@ const OperationsList = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-5">
-        {operations.map((operation) => (
+        {operations && operations.map((operation) => (
           <Card key={operation.id} className="shadow-md">
 
             <CardContent className="flex justify-between items-center p-5">
               <h2 className='font-bold'>{operation.label}</h2>
               <p className="text-sm text-gray-600">Amount: {operation.amount}€</p>
-              <p className="text-sm text-gray-500">Date: {operation.date}</p>
+              <p className="text-sm text-gray-500">Date: {formatDate(operation.date)}</p>
               <div className='flex gap-2'>
                 <Button variant="link" asChild>
                   <a href={`/operations/edit/${operation.id}`}>Edit</a>
@@ -48,7 +50,7 @@ const OperationsList = () => {
                       </DialogClose>
                       <Button
                         variant="destructive"
-                        onClick={() => deleteOperation(operation.id)}
+                        // onClick={() => deleteOperation(operation.id)}
                       >
                         Confirm
                       </Button>
