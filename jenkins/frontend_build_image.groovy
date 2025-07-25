@@ -1,4 +1,5 @@
 stage('Build & Push Frontend Docker Image') {
+    unstash 'frontend-source'
     dir('front') {
         sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_front:latest"
         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}"
