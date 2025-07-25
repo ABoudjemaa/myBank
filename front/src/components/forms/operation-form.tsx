@@ -14,7 +14,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useOperations } from "@/hooks/useOperations"
+// import { useOperations } from "@/hooks/useOperations"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -23,12 +23,12 @@ import { OperationFormSchema } from "@/components/forms/schemas/operation-form-s
 
 export default function OperationForm({ operation }: { operation?: any }) {
 
-    const { createOperation, editOperation } = useOperations();
+    // const { createOperation, editOperation } = useOperations();
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
 
     const handleCreate = async (values: any) => {
-        await createOperation(values);
+        // await createOperation(values);
         toast.success("Operation Created successfully", {
             style: {
                 background: "#4CAF50",
@@ -38,7 +38,7 @@ export default function OperationForm({ operation }: { operation?: any }) {
     }
 
     const handleUpdate = async (values: any) => {
-        await editOperation(operation.id, values);
+        // await editOperation(operation.id, values);
         toast.success("Operation Updated successfully", {
             style: {
                 background: "#4CAF50",
