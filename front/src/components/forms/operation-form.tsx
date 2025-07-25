@@ -1,152 +1,64 @@
-"use client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
-import { Alert } from "@/components/ui/alert"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-// import { useOperations } from "@/hooks/useOperations"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { toast } from "sonner"
-import { OperationFormSchema } from "@/components/forms/schemas/operation-form-schema"
+import {Form, FormField, FormItem, FormLabel, FormControl, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {UseFormReturn} from "react-hook-form";
+import {OperationFormData} from "@/components/schema/operation-form-schema";
+import SelectCategoryField from "@/components/forms/fields/select-category-field";
+import {Category} from "@/types/category";
 
+interface OperationFormProps {
+    form: UseFormReturn<OperationFormData>;
+    categories: Category[];
+    onSubmit: (data: OperationFormData) => void;
+    isLoading: boolean;
+    submitLabel?: string;
+}
 
-export default function OperationForm({ operation }: { operation?: any }) {
-
-    // const { createOperation, editOperation } = useOperations();
-    const router = useRouter();
-    const [error, setError] = useState<string | null>(null);
-
-    const handleCreate = async (values: any) => {
-        // await createOperation(values);
-        toast.success("Operation Created successfully", {
-            style: {
-                background: "#4CAF50",
-                color: "#FFFFFF",
-            },
-        });
-    }
-
-    const handleUpdate = async (values: any) => {
-        // await editOperation(operation.id, values);
-        toast.success("Operation Updated successfully", {
-            style: {
-                background: "#4CAF50",
-                color: "#FFFFFF",
-            },
-        });
-    }
-
-    const form = useForm<z.infer<typeof OperationFormSchema>>({
-        resolver: zodResolver(OperationFormSchema),
-        defaultValues: {
-            label: operation?.label || "",
-            amount: parseInt(operation?.amount) || 0,
-            category:  `/api/categories/${operation?.category.id}` || "/api/categories/3",
-        },
-    })
-
-    async function onSubmit(values: z.infer<typeof OperationFormSchema>) {
-        try {
-            if (operation) {
-                await handleUpdate(values);
-            }
-            else {
-                await handleCreate(values);
-            }
-            router.push('/operations');
-        } catch (err) {
-            console.log(err);
-            setError('Failed to create operation. Please try again.');
-        }
-    }
-
+export default function OperationForm({
+                                          form,
+                                          categories,
+                                          onSubmit,
+                                          isLoading,
+                                          submitLabel = "Create Account",
+                                      }: OperationFormProps) {
     return (
         <Form {...form}>
-            {error && (
-                <Alert variant="destructive" className="text-sm">
-                    {error}
-                </Alert>
-            )}
-            <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-8 max-w-4xl mx-auto">
+                {/* Email */}
                 <FormField
                     control={form.control}
                     name="label"
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
-                            <FormLabel>Label</FormLabel>
+                            <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="username" {...field} />
+                                <Input type="text" placeholder="Operation title" {...field} />
                             </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
                 <FormField
                     control={form.control}
                     name="amount"
-                    render={({ field }) => (
+                    render={({field}) => (
                         <FormItem>
-                            <FormLabel>Amount</FormLabel>
+                            <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input type="number" placeholder="" {...field} />
+                                <Input type="number" placeholder="Operation title" {...field} />
                             </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
+                            <FormMessage/>
                         </FormItem>
                     )}
                 />
+                <SelectCategoryField form={form} name={"category"} categories={categories}/>
 
-                {/* <FormField
-                    control={form.control}
-                    name="date"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Date</FormLabel>
-                            <FormControl>
-                                <Input type="email" placeholder="Date" {...field} />
-                            </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
-
-                <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Category</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field} />
-                            </FormControl>
-                            <FormDescription>
-
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Submit</Button>
+                <div className="flex items-center justify-between">
+                    <Button type="submit" disabled={isLoading}>
+                        {submitLabel}
+                    </Button>
+                </div>
             </form>
         </Form>
-    )
+    );
 }

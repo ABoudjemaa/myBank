@@ -26,7 +26,6 @@ const EditCategoryPage: React.FC = () => {
     const router = useRouter();
 
     const handleSubmit = async (values: CategoryFormData) => {
-        console.log(values);
         patch(`/categories/${category?.id}`, values)
             .then(() => {
                 toast.success("Category updated successfully", {

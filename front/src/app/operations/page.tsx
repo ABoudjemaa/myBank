@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import {useGetOperations} from "@/hooks/get/use-get-operations";
 import {formatDate} from "@/lib/utils";
+import Link from "next/link";
 
 
 const OperationsList = () => {
@@ -19,7 +20,7 @@ const OperationsList = () => {
         <h1 className="text-2xl font-bold text-center">Operations</h1>
         <div className="text-center">
           <Button asChild>
-            <a href="/operations/create">Create New Operation</a>
+            <Link href="/operations/create">Create New Operation</Link>
           </Button>
         </div>
       </div>
