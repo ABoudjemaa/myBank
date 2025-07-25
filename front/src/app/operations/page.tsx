@@ -34,7 +34,7 @@ const OperationsList = () => {
               <p className="text-sm text-gray-500">Date: {formatDate(operation.date)}</p>
               <div className='flex gap-2'>
                 <Button variant="link" asChild>
-                  <a href={`/operations/edit/${operation.id}`}>Edit</a>
+                  <Link href={`/operations/edit/${operation.id}`}>Edit</Link>
                 </Button>
                 <Dialog>
                   <DialogTrigger asChild>
