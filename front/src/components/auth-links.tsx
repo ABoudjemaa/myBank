@@ -7,12 +7,8 @@ import Link from "next/link";
 function AuthLinks() {
     return (
         <>
-            <Button asChild variant="outline">
-                <Link href={"/login"}>Login</Link>
-            </Button>
-            <Button asChild >
-                <Link href={"/sign-up"}>Sign Up</Link>
-            </Button>
+                <Link href={"/login"} className={"text-gray-300  hover:text-[#FCA311]"}>Login</Link>
+                <Link href={"/sign-up"} className={"text-gray-300  hover:text-[#FCA311]"}>Sign Up</Link>
         </>
     );
 }

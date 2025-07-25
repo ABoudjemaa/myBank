@@ -6,13 +6,15 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import {useGetOperations} from "@/hooks/get/use-get-operations";
 import {formatDate} from "@/lib/utils";
 import Link from "next/link";
+import Loading from "@/components/loading";
+import Error from "@/components/Error";
 
 
 const OperationsList = () => {
   const { operations, loading, error } = useGetOperations();
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">Error loading operations.</p>;
+  if (loading) return <Loading/>
+  if (error) return <Error error={error}/>;
 
   return (
     <div className="container mx-auto py-6">
@@ -33,7 +35,7 @@ const OperationsList = () => {
               <p className="text-sm text-gray-600">Amount: {operation.amount}€</p>
               <p className="text-sm text-gray-500">Date: {formatDate(operation.date)}</p>
               <div className='flex gap-2'>
-                <Button variant="link" asChild>
+                <Button variant="secondary" asChild>
                   <Link href={`/operations/edit/${operation.id}`}>Edit</Link>
                 </Button>
                 <Dialog>
