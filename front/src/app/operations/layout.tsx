@@ -1,12 +1,18 @@
+import NavBar from "@/components/nav-bar";
+import {Toaster} from "@/components/ui/sonner";
+
 const Layout = ({
                     children,
                 }: Readonly<{
     children: React.ReactNode;
 }>) => {
     return (
-        <div className={"max-w-6xl mx-auto"}>
-            {children}
-        </div>
+        <>
+            <NavBar/>
+            <main className="max-w-6xl mx-auto">
+                {children}
+            </main>
+        </>
     );
 };
 
