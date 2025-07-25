@@ -10,6 +10,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\OperationRepository;
+use App\State\Operation\OperationCollectionProvider;
+use App\State\Operation\OperationItemProvider;
+use App\State\Operation\OperationPostProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -17,19 +20,52 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
-            normalizationContext: ['groups' => ['read:Operation:collection']]
+            normalizationContext: [
+                'groups' => [
+                    'operation.id',
+                    'operation.label',
+                    'operation.amount',
+                    'operation.date',
+                    'operation.category',
+                    'category.id',
+                    'category.title',
+                ]
+            ],
+            provider: OperationCollectionProvider::class,
         ),
         new Get(
-            normalizationContext: ['groups' => ['read:Operation:collection', 'read:Operation:item']]
+            normalizationContext: [
+                'groups' => [
+                    'operation.id',
+                    'operation.label',
+                    'operation.amount',
+                    'operation.date',
+                    'operation.category',
+                    'category.id',
+                    'category.title',
+                ]
+            ],
+            provider: OperationItemProvider::class
         ),
         new Post(
-            denormalizationContext: ['groups' => ['put:Operation']]
-        ),
-        new Put(
-            denormalizationContext: ['groups' => ['put:Operation']]
+            denormalizationContext: [
+                'groups' => [
+                    'operation.label',
+                    'operation.amount',
+                    'operation.createdBy',
+                    'operation.category',
+                ]
+            ],
+            processor: OperationPostProcessor::class
         ),
         new Patch(
-            denormalizationContext: ['groups' => ['put:Operation']]
+            denormalizationContext: [
+                'groups' => [
+                    'operation.label',
+                    'operation.amount',
+                    'operation.category',
+                ]
+            ]
         ),
         new Delete(),
     ],
