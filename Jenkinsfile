@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     stages {
-        // stage('Clone Repository') {
-        //     agent { label 'front-agent' }
-        //     steps {
-        //         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
-        //     }
-        // }
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+            }
+        }
 
         // stage('Install & Run Frontend') {
         //     agent { label 'front-agent' }
@@ -63,15 +62,15 @@ pipeline {
         //     }
         // }
 
-        stage('Frontend Pipeline') {
-            agent { label 'front-agent' }
-            steps {
-                script {
-                    load 'jenkins/frontend_install.groovy'
-                }
-            stash name: 'frontend-source', includes: 'front/**'
-            }
-        }
+        // stage('Frontend Pipeline') {
+        //     agent { label 'front-agent' }
+        //     steps {
+        //         script {
+        //             load 'jenkins/frontend_install.groovy'
+        //         }
+        //     stash name: 'frontend-source', includes: 'front/**'
+        //     }
+        // }
 
         stage('Frontend build image Pipeline') {
             agent { label "${AGENT_DOCKER}" }

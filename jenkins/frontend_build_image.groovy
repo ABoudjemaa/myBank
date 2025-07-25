@@ -1,6 +1,7 @@
 stage('Build & Push Frontend Docker Image') {
     unstash 'frontend-source'
     dir('front') {
+        sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
         sh "docker build --no-cache . -t ${DOCKERHUB_USERNAME}/mybank_front:latest"
         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}"
         sh "docker push ${DOCKERHUB_USERNAME}/mybank_front:latest"
