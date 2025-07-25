@@ -1,8 +1,8 @@
 stage('Build & Push Frontend Docker Image') {
     dir('front') {
-        sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_front"
+        sh "docker build . -t ${DOCKERHUB_USERNAME}/mybank_front:latest"
         sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKER_PASSWORD}"
-        sh "docker push ${DOCKERHUB_USERNAME}/mybank_front"
+        sh "docker push ${DOCKERHUB_USERNAME}/mybank_front:latest"
     }
 }
 

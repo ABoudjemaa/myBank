@@ -69,12 +69,14 @@ pipeline {
                 script {
                     load 'jenkins/frontend_install.groovy'
                 }
+            stash name: 'frontend-source', includes: 'front/**'
             }
         }
 
         stage('Frontend build image Pipeline') {
             agent { label "${AGENT_DOCKER}" }
             steps {
+            unstash 'frontend-source'
                 script {
                     load 'jenkins/frontend_build_image.groovy'
                 }
