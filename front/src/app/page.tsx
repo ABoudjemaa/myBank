@@ -11,6 +11,9 @@ function Home() {
                 <p className="text-lg text-gray-700">
                     Manage your expenses easily and stay in control of your money.
                 </p>
+                <div className={"flex justify-center items-center"}>
+                <img src={'/mybank.png'} alt={'mybank'}/>
+                </div>
             </main>
             <Footer/>
         </>

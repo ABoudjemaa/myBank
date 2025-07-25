@@ -1,7 +1,10 @@
+'use client';
 import React from 'react';
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {activeLinkClasses} from "@/lib/active-link-classes";
+import {useAuthStore} from "@/store/use-auth-store";
+import {Button} from "@/components/ui/button";
 
 const UserNav = () => {
     const pathname = usePathname();
