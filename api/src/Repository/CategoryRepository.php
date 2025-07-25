@@ -32,11 +32,13 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneByUser(User $user): ?Category
+    public function findOneByIdAndUser(User $user, int $categoryId): ?Category
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.createdBy = :user')
+            ->andWhere('c.id = :id')
             ->setParameter('user', $user)
+            ->setParameter('id', $categoryId)
             ->getQuery()
             ->getOneOrNullResult()
         ;

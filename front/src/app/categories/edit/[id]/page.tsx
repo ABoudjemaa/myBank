@@ -49,7 +49,7 @@ const EditCategoryPage: React.FC = () => {
         return <Error error={error}/>;
 
     return (
-        <CategoryForm form={form} onSubmit={handleSubmit} isLoading={false}/>
+        <CategoryForm form={form} onSubmit={handleSubmit} isLoading={false} submitLabel={'Update Category'}/>
     );
 };
 

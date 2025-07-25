@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\CategoryRepository;
 use App\State\Category\CategoryCollectionProvider;
 use App\State\Category\CategoryDeleteProcessor;
+use App\State\Category\CategoryItemProvider;
 use App\State\Category\CategoryPatchProcessor;
 use App\State\Category\CategoryPostProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,6 +28,14 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 'category.title'
             ]],
             provider: CategoryCollectionProvider::class,
+        ),
+        new Get(
+            normalizationContext: ['groups' => [
+                'category.id',
+                'category.title',
+                'category.operations',
+            ]],
+            provider: CategoryItemProvider::class,
         ),
         new Post(
             denormalizationContext: ['groups' => [
