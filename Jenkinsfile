@@ -63,13 +63,13 @@ pipeline {
         //     }
         // }
 
-        stage('Frontend Pipeline') {
-            steps {
-                script {
-                    load 'jenkins/frontend.groovy'
-                }
-            }
-        }
+//         stage('Frontend Pipeline') {
+//             steps {
+//                 script {
+//                     load 'jenkins/frontend.groovy'
+//                 }
+//             }
+//         }
 
         stage('Backend Pipeline') {
             steps {
