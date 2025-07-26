@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 
-class CategoryPostTest extends Helper
+class CategoryPost extends Helper
 {
     public function testSomething(): void
     {
