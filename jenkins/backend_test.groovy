@@ -1,10 +1,11 @@
 node("${AGENT_DOCKER}") {
 
-    stage('Clone Backend') {
-        git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
-    }
+//     stage('Clone Backend') {
+//         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+//     }
 
     stage('Prepare Environment and Docker Compose') {
+        git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
         dir('api') {
             sh 'rm -f .env .env.local .env.test.local'
             // Create .env file before starting services
@@ -32,25 +33,4 @@ node("${AGENT_DOCKER}") {
         }
     }
 
-    stage('Install Dependencies and Run Symfony Commands') {
-        dir('api') {
-            // Run these inside your app container (defined in docker-compose.yml as `php` or similar)
-            sh '''
-                docker compose exec -T php composer install --no-interaction --optimize-autoloader
-
-                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
-                    docker compose exec -T php php bin/console lexik:jwt:generate-keypair
-                fi
-
-                docker compose exec -T php php bin/console doctrine:schema:update --force --env=test
-                docker compose exec -T php php bin/phpunit
-            '''
-        }
-    }
-
-    stage('Cleanup') {
-        dir('api') {
-            sh 'docker compose down -v'
-        }
-    }
 }
