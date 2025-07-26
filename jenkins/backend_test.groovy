@@ -51,6 +51,17 @@ node("${AGENT_DOCKER}") {
 
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls"'
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m"'
+           sh """
+           docker exec api-backend-1 bash -c 'cat > /var/www/project/.env.test <<EOF
+           APP_ENV=test
+           APP_SECRET=${APP_SECRET}
+           DATABASE_URL=mysql://root:root@database_test:3306/mybank_test?serverVersion=9.1.0&charset=utf8mb4
+           CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+           JWT_SECRET_KEY=${JWT_SECRET_KEY}
+           JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+           JWT_PASSPHRASE=${JWT_PASSPHRASE}
+           EOF'
+           """
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && cat .env.test"'
 
 
