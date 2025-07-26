@@ -71,6 +71,7 @@ node("${AGENT_DOCKER}") {
 //            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:database:create --env=test"'
 //            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:schema:create --env=test"'
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m --env=test"'
+           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
 //
 //             // Wait for MySQL to be ready (use retry logic)
