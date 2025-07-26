@@ -36,20 +36,20 @@ node("${AGENT_DOCKER}") {
                 JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env.test
             """
 
-            sh '''
-                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
-                  php bin/console lexik:jwt:generate-keypair
-                fi
-            '''
+//             sh '''
+//                 if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+//                   php bin/console lexik:jwt:generate-keypair
+//                 fi
+//             '''
 
-            sh 'composer install --no-interaction --optimize-autoloader'
+//             sh 'composer install --no-interaction --optimize-autoloader'
 
             // Start all services
             sh 'docker compose up -d'
 
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls"'
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m"'
-           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls .env.test"'
+           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && cat .env.test"'
 
 
 //            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console cache:clear --env=test"'
