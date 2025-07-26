@@ -7,12 +7,12 @@ node("${AGENT_DOCKER}") {
     stage('Prepare Environment and Docker Compose') {
         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
         dir('api') {
-//             sh '''
-//                 docker compose down -v --remove-orphans
-//                 rm -rf var/cache/*
-//                 rm -rf vendor composer.lock
-//                 rm -f .env .env.test .env.local .env.test.local
-//             '''
+            sh '''
+                docker compose down -v --remove-orphans
+                rm -rf var/cache/*
+                rm -rf vendor composer.lock
+                rm -f .env .env.test .env.local .env.test.local
+            '''
             // Create .env file before starting services
             sh """
                     echo \"APP_ENV=dev

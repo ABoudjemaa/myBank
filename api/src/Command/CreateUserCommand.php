@@ -25,8 +25,8 @@ class CreateUserCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $adminEmail = $_ENV['ADMIN_EMAIL'] ?? 'admin@example.com';
-        $adminPassword = $_ENV['ADMIN_PASSWORD'] ?? 'admin123';
+        $adminEmail = $_ENV['ADMIN_EMAIL'] ?? 'boudjemaa.amine.2003@gmail.com';
+        $adminPassword = $_ENV['ADMIN_PASSWORD'] ?? '12345678';
 
         $repo = $this->em->getRepository(User::class);
         $existing = $repo->findOneBy(['email' => $adminEmail]);
