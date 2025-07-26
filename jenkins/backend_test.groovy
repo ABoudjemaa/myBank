@@ -6,6 +6,7 @@ node("${AGENT_DOCKER}") {
 
     stage('Prepare Environment and Docker Compose') {
         dir('api') {
+            sh 'rm -f .env .env.local .env.test.local'
             // Create .env file before starting services
             sh """
                 echo "APP_ENV=test
