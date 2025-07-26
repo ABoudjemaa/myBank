@@ -10,13 +10,14 @@ node("${AGENT_DOCKER}") {
             sh 'rm -f .env .env.local .env.test.local'
             // Create .env file before starting services
             sh """
-                echo "APP_ENV=test
+                    echo \"APP_ENV=test
+                APP_DEBUG=0
                 APP_SECRET=${APP_SECRET}
-                DATABASE_URL=mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4
+                DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
                 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-                JWT_PASSPHRASE=${JWT_PASSPHRASE}" > .env
+                JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
             """
 
             sh 'ls -la .env'
