@@ -34,6 +34,7 @@ stage('Build & Push API Docker Image') {
     ]) {
             sh """
             ssh -i \$SSH_KEY ${REMOTE_USER}@${REMOTE_HOST} '
+              docker pull ${DOCKERHUB_USERNAME}/mybank_api:latest &&
               docker stop mybank_api || true &&
               docker rm mybank_api || true &&
               docker network create app-network || true &&

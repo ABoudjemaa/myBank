@@ -35,18 +35,15 @@ pipeline {
             }
         }
 
-        stage('Backend build image Pipeline') {
-            agent { label "${AGENT_DOCKER}" }
-            steps {
-                script {
-                    load 'jenkins/backend_build_image.groovy'
-                }
-            }
-        }
+//         stage('Backend build image Pipeline') {
+//             agent { label "${AGENT_DOCKER}" }
+//             steps {
+//                 script {
+//                     load 'jenkins/backend_build_image.groovy'
+//                 }
+//             }
+//         }
 
-        
+
     }
 }
-
-
-                        // docker run -d --name mybank_api -p 8083:80 ${DOCKERHUB_USERNAME}/mybank_api
