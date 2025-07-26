@@ -35,20 +35,31 @@ node("${AGENT_DOCKER}") {
     stage('Prepare .env and JWT keys') {
         dir('api') {
             sh 'rm -f .env.local .env.test.local'
-            sh '''
-                echo "APP_ENV=test
-                APP_SECRET=dummypass
+
+                        // Créer le fichier .env
+            sh """
+                    echo \"APP_ENV=test
+                APP_DEBUG=0
+                APP_SECRET=${APP_SECRET}
                 DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
-                " > .env.test
-            '''
+                CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+                JWT_SECRET_KEY=${JWT_SECRET_KEY}
+                JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+                JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
+            """
             // Générer les clés JWT si elles n'existent pas
             sh '''
                 if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
                     php bin/console lexik:jwt:generate-keypair
                 fi
             '''
-            sh 'php bin/console doctrine:schema:update --force --env=test'
-            sh 'APP_ENV=test php bin/phpunit'
+            sh 'composer install --no-interaction --optimize-autoloader'
+
+            // Lancer les commandes Symfony dans un env correct
+            withEnv(["DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test"]) {
+                sh 'php bin/console doctrine:schema:update --force --env=test'
+                sh 'php bin/phpunit'
+            }
         }
     }
 
