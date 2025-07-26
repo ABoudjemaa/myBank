@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
-            }
-        }
+//         stage('Clone Repository') {
+//             steps {
+//                 git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+//             }
+//         }
 
 //         stage('Frontend Pipeline') {
 //             agent { label 'front-agent' }
