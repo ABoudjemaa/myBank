@@ -15,14 +15,13 @@ node("${AGENT_DOCKER}") {
                 -e MYSQL_DATABASE=mybank_test \
                 -e MYSQL_USER=symfony \
                 -e MYSQL_PASSWORD=symfony \
-                mysql:9
+                mysql:9.0
         '''
     }
 }
 
 // Étape 2 : Tester l'application Symfony
 node('backend-agent') {
-    env.DATABASE_URL = 'mysql://symfony:symfony@mybank-test-db:3306/mybank_test'
 
     stage('Run Backend Tests') {
         dir('api') {
@@ -34,7 +33,7 @@ node('backend-agent') {
                 echo \"APP_ENV=test
 APP_DEBUG=0
 APP_SECRET=${APP_SECRET}
-DATABASE_URL=${DATABASE_URL}
+DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
 JWT_SECRET_KEY=${JWT_SECRET_KEY}
 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
