@@ -26,32 +26,32 @@ pipeline {
 //             }
 //         }
 
-        stage('Backend install Pipeline') {
-            agent { node { label 'backend-agent' } }
-            steps {
-                script {
-                    load 'jenkins/backend_install.groovy'
-                }
-            }
-        }
-
-//         stage('Test Backend') {
-// //             agent { node { label 'backend-agent' } }
+//         stage('Backend install Pipeline') {
+//             agent { node { label 'backend-agent' } }
 //             steps {
 //                 script {
-//                     load 'jenkins/backend_test.groovy'
+//                     load 'jenkins/backend_install.groovy'
 //                 }
 //             }
 //         }
 
-        stage('Backend build image Pipeline') {
-            agent { label "${AGENT_DOCKER}" }
+        stage('Test Backend') {
+//             agent { node { label 'backend-agent' } }
             steps {
                 script {
-                    load 'jenkins/backend_build_image.groovy'
+                    load 'jenkins/backend_test.groovy'
                 }
             }
         }
+
+//         stage('Backend build image Pipeline') {
+//             agent { label "${AGENT_DOCKER}" }
+//             steps {
+//                 script {
+//                     load 'jenkins/backend_build_image.groovy'
+//                 }
+//             }
+//         }
 
 
     }

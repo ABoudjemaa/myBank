@@ -10,7 +10,7 @@ node("${AGENT_DOCKER}") {
             sh 'rm -f .env .env.local .env.test.local'
             // Create .env file before starting services
             sh """
-                    echo \"APP_ENV=test
+                    echo \"APP_ENV=dev
                 APP_DEBUG=0
                 APP_SECRET=${APP_SECRET}
                 DATABASE_URL=mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4
