@@ -47,7 +47,7 @@ node('backend-agent') {
                 fi
             '''
 
-            sh 'php -m | grep pdo_mysql'
+//             sh 'php -m | grep pdo_mysql'
             sh 'sudo apt-get install php-mysql'
 
             // Installation des dépendances et exécution des tests
