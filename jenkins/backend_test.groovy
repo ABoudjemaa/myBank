@@ -22,7 +22,9 @@ node("${AGENT_DOCKER}") {
                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
                 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-                JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
+                JWT_PASSPHRASE=${JWT_PASSPHRASE}
+                ADMIN_EMAIL=boudjemaa.amine.2003@gmail.com
+                ADMIN_PASSWORD=12345678\" > .env
             """
 
             sh """
