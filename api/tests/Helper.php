@@ -33,8 +33,8 @@ abstract class Helper extends ApiTestCase
     protected function getUserToken(): string
     {
         return $this->getToken([
-            'username' => "admin@example.com",
-            'password' => "admin1234",
+            'username' => "boudjemaa.amine.2003@gmail.com",
+            'password' => "12345678",
         ]);
     }
 
