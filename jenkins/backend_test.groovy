@@ -47,13 +47,10 @@ node('backend-agent') {
                 fi
             '''
 
-//             sh 'php -m | grep pdo_mysql'
-            sh 'sudo apt-get install php-mysql'
-
             // Installation des dépendances et exécution des tests
-//             sh 'composer install --no-interaction --optimize-autoloader'
-//             sh 'php bin/console doctrine:schema:update --force --env=test'
-//             sh 'php bin/phpunit'
+            sh 'composer install --no-interaction --optimize-autoloader'
+            sh 'php bin/console doctrine:schema:update --force --env=test'
+            sh 'php bin/phpunit'
         }
 
         stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
