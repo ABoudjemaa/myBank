@@ -48,6 +48,7 @@ node('backend-agent') {
             '''
 
             sh 'ls -a'
+            sh 'cat .env'
 
             // Installation des dépendances et exécution des tests
             sh 'composer install --no-interaction --optimize-autoloader'
