@@ -32,6 +32,8 @@ node("${AGENT_DOCKER}") {
             sh 'docker compose up -d'
 
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls"'
+           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m"'
+           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
 
             // Wait for MySQL to be ready (use retry logic)
             sh '''
