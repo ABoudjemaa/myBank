@@ -36,9 +36,9 @@ node("${AGENT_DOCKER}") {
         dir('api') {
             sh '''
                 echo "APP_ENV=test
-APP_SECRET=dummypass
-DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
-" > .env
+                APP_SECRET=dummypass
+                DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
+                " > .env.test
 
                 if [ ! -f config/jwt/private.pem ]; then
                     php bin/console lexik:jwt:generate-keypair
@@ -50,7 +50,7 @@ DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
     stage('Run Symfony Tests') {
         dir('api') {
             sh 'php bin/console doctrine:schema:update --force --env=test'
-            sh 'php bin/phpunit'
+            sh 'APP_ENV=test php bin/phpunit'
         }
     }
 
