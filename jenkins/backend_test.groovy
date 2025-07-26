@@ -1,4 +1,3 @@
-// Étape 1 : Lancer MySQL dans un conteneur Docker
 node("${AGENT_DOCKER}") {
     stage('Setup Docker Network & MySQL') {
         sh 'docker stop mybank-test-db || true'
@@ -16,60 +15,46 @@ node("${AGENT_DOCKER}") {
                 mysql:9.0
         '''
     }
-}
 
-// Étape 2 : Tester l'application Symfony
-node('backend-agent') {
-    stage('Run Backend Tests') {
+    stage('Clone Backend') {
+        git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
+    }
+
+    stage('Install Backend') {
         dir('api') {
-            // Connecter dynamiquement le conteneur Jenkins au réseau Docker
             sh '''
-                CONTAINER_ID=$(basename $(cat /proc/1/cpuset))
-                docker network connect mybank-network $CONTAINER_ID || true
+                apt-get update && apt-get install -y php php-mysql php-curl php-xml php-mbstring unzip git
+
+                curl -sS https://getcomposer.org/installer | php
+                mv composer.phar /usr/local/bin/composer
             '''
+            sh 'composer install --no-interaction --optimize-autoloader'
+        }
+    }
 
-            // Nettoyer d'éventuels .env.local
-            sh 'rm -f .env.local .env.test.local'
-
-            // Créer le fichier .env
-            sh """
-                echo \"APP_ENV=test
-APP_DEBUG=0
-APP_SECRET=${APP_SECRET}
-DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
-CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
-JWT_SECRET_KEY=${JWT_SECRET_KEY}
-JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
-            """
-
-            // Générer les clés JWT si elles n'existent pas
+    stage('Prepare .env and JWT keys') {
+        dir('api') {
             sh '''
-                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+                echo "APP_ENV=test
+APP_SECRET=dummypass
+DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
+" > .env
+
+                if [ ! -f config/jwt/private.pem ]; then
                     php bin/console lexik:jwt:generate-keypair
                 fi
             '''
-
-            // Afficher pour debug
-            sh 'cat .env'
-
-            // Installer les dépendances
-            sh 'composer install --no-interaction --optimize-autoloader'
-
-            // Lancer les commandes Symfony dans un env correct
-            withEnv(["DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test"]) {
-                sh 'php bin/console doctrine:schema:update --force --env=test'
-                sh 'php bin/phpunit'
-            }
         }
-
-        stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
     }
-}
 
-// Étape 3 : Nettoyage
-node("${AGENT_DOCKER}") {
-    stage('Cleanup Test Environment') {
+    stage('Run Symfony Tests') {
+        dir('api') {
+            sh 'php bin/console doctrine:schema:update --force --env=test'
+            sh 'php bin/phpunit'
+        }
+    }
+
+    stage('Cleanup') {
         sh 'docker stop mybank-test-db || true'
         sh 'docker network rm mybank-network || true'
     }
