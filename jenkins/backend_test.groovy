@@ -47,6 +47,8 @@ node('backend-agent') {
                 fi
             '''
 
+            sh 'ls'
+
             // Installation des dépendances et exécution des tests
             sh 'composer install --no-interaction --optimize-autoloader'
             sh 'php bin/console doctrine:schema:update --force --env=test'
