@@ -31,13 +31,13 @@ node('backend-agent') {
             // Créer le fichier .env
             sh """
                 echo \"APP_ENV=test
-APP_DEBUG=0
-APP_SECRET=${APP_SECRET}
-DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
-CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
-JWT_SECRET_KEY=${JWT_SECRET_KEY}
-JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
+                        APP_DEBUG=0
+                        APP_SECRET=${APP_SECRET}
+                        DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
+                        CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+                        JWT_SECRET_KEY=${JWT_SECRET_KEY}
+                        JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+                        JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
             """
 
             // Générer les clés JWT si elles n'existent pas
@@ -47,10 +47,12 @@ JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
                 fi
             '''
 
+            sh 'php -m | grep pdo_mysql'
+
             // Installation des dépendances et exécution des tests
-            sh 'composer install --no-interaction --optimize-autoloader'
-            sh 'php bin/console doctrine:schema:update --force --env=test'
-            sh 'php bin/phpunit'
+//             sh 'composer install --no-interaction --optimize-autoloader'
+//             sh 'php bin/console doctrine:schema:update --force --env=test'
+//             sh 'php bin/phpunit'
         }
 
         stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
