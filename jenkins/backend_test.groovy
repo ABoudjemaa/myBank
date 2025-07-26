@@ -20,35 +20,33 @@ node("${AGENT_DOCKER}") {
         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
     }
 
-    stage('Install Backend') {
-        dir('api') {
-            sh '''
-                apt-get update && apt-get install -y php php-mysql php-curl php-xml php-mbstring unzip git
-
-                curl -sS https://getcomposer.org/installer | php
-                mv composer.phar /usr/local/bin/composer
-            '''
-            sh 'composer install --no-interaction --optimize-autoloader'
-        }
-    }
+//     stage('Install Backend') {
+//         dir('api') {
+//             sh '''
+//                 apt-get update && apt-get install -y php php-mysql php-curl php-xml php-mbstring unzip git
+//
+//                 curl -sS https://getcomposer.org/installer | php
+//                 mv composer.phar /usr/local/bin/composer
+//             '''
+//             sh 'composer install --no-interaction --optimize-autoloader'
+//         }
+//     }
 
     stage('Prepare .env and JWT keys') {
         dir('api') {
+            sh 'rm -f .env.local .env.test.local'
             sh '''
                 echo "APP_ENV=test
                 APP_SECRET=dummypass
                 DATABASE_URL=mysql://symfony:symfony@mybank-test-db:3306/mybank_test
                 " > .env.test
-
-                if [ ! -f config/jwt/private.pem ]; then
+            '''
+            // Générer les clés JWT si elles n'existent pas
+            sh '''
+                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
                     php bin/console lexik:jwt:generate-keypair
                 fi
             '''
-        }
-    }
-
-    stage('Run Symfony Tests') {
-        dir('api') {
             sh 'php bin/console doctrine:schema:update --force --env=test'
             sh 'APP_ENV=test php bin/phpunit'
         }
