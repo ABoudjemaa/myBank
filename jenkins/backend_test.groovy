@@ -2,8 +2,8 @@
 node("${AGENT_DOCKER}") {
     stage('Setup Docker Network & MySQL') {
         // Créer le réseau Docker (si pas déjà existant)
-        sh ' docker stop mybank-test-db || true &&'
-        sh ' docker rm mybank-test-db || true &&'
+        sh 'docker stop mybank-test-db || true &&'
+        sh 'docker rm mybank-test-db || true &&'
         sh 'docker network create mybank-network || true'
 
         // Lancer le conteneur MySQL
