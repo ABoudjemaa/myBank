@@ -19,8 +19,8 @@ stage('Install Backend') {
               php bin/console lexik:jwt:generate-keypair
             fi
         '''
-        sh 'composer install --no-interaction --optimize-autoloader'
-        sh 'php bin/phpunit'
+//         sh 'composer install --no-interaction --optimize-autoloader'
+//         sh 'php bin/phpunit'
     }
     stash name: 'symfony-prepared', includes: 'api/.env, api/config/jwt/**'
 }
