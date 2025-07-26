@@ -21,7 +21,7 @@ node("${AGENT_DOCKER}") {
                 fi
             '''
             sh 'composer install --no-interaction --optimize-autoloader'
-            sh 'docker-compose up'
+            sh 'docker compose up -d'
         }
     }
 }
