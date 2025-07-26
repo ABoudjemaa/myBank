@@ -20,7 +20,13 @@ node("${AGENT_DOCKER}") {
                 JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
             """
 
-            sh 'ls -la .env'
+            sh '''
+                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+                  php bin/console lexik:jwt:generate-keypair
+                fi
+            '''
+
+            sh 'composer install --no-interaction --optimize-autoloader'
 
             // Start all services
             sh 'docker compose up -d'
