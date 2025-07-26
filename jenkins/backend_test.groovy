@@ -19,6 +19,8 @@ node("${AGENT_DOCKER}") {
                 JWT_PASSPHRASE=${JWT_PASSPHRASE}" > .env
             """
 
+            sh 'ls -la .env'
+
             // Start all services
             sh 'docker compose up -d'
 
