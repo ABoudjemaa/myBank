@@ -22,8 +22,8 @@ node("${AGENT_DOCKER}") {
 
             sh """
                 echo \"APP_ENV=test
-                KERNEL_CLASS='App\\Kernel'
-                APP_SECRET='$ecretf0rt3st'
+                KERNEL_CLASS=App\\\\Kernel
+                APP_SECRET=${APP_SECRET}
                 DATABASE_URL=mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4
                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
