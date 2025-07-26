@@ -47,7 +47,7 @@ node('backend-agent') {
                 fi
             '''
 
-            sh 'ls'
+            sh 'ls -a'
 
             // Installation des dépendances et exécution des tests
             sh 'composer install --no-interaction --optimize-autoloader'
