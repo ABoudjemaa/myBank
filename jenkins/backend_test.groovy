@@ -33,7 +33,6 @@ node("${AGENT_DOCKER}") {
 
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls"'
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m"'
-           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
 
             // Wait for MySQL to be ready (use retry logic)
             sh '''
@@ -43,6 +42,7 @@ node("${AGENT_DOCKER}") {
                   sleep 2
                 done
             '''
+           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
         }
     }
 
