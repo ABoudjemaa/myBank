@@ -13,7 +13,6 @@ node("${AGENT_DOCKER}") {
                 -e MYSQL_DATABASE=mybank_test \
                 -e MYSQL_USER=symfony \
                 -e MYSQL_PASSWORD=symfony \
-                -p 3306:3306 \
                 mysql:8
         '''
     }
