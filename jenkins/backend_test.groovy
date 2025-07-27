@@ -48,7 +48,7 @@ node("${AGENT_DOCKER}") {
             sh """
                 echo "Waiting for MySQL to be ready..."
                 for i in {1..30}; do
-                  docker exec api-database_test-1 mysqladmin ping -h 127.0.0.1 --protocol=tcp -u root -proot && break
+                  docker exec api-database_test-1 bash -c 'mysql -u root -proot' && break
                   echo "MySQL not ready yet... retrying (\$i)..."
                   sleep 2
                 done
