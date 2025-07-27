@@ -15,6 +15,7 @@ stage('Install Backend') {
             JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
             JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env
         """
+        sh 'composer install --no-interaction --optimize-autoloader'
         sh '''
             if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
               php bin/console lexik:jwt:generate-keypair
