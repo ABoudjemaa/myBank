@@ -7,7 +7,6 @@ stage('Install Backend') {
     dir('api') {
         sh """
             echo \"APP_ENV=${APP_ENV}
-            APP_DEBUG=0
             APP_SECRET=${APP_SECRET}
             DATABASE_URL=${DATABASE_URL}
             CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
