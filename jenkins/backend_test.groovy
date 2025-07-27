@@ -37,19 +37,28 @@ node("${AGENT_DOCKER}") {
 
             sh 'cat .env.test'
 
-//             sh '''
-//                 if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
-//                   php bin/console lexik:jwt:generate-keypair
-//                 fi
-//             '''
+            sh '''
+                if [ ! -f config/jwt/private.pem ] || [ ! -f config/jwt/public.pem ]; then
+                  php bin/console lexik:jwt:generate-keypair
+                fi
+            '''
 
-//             sh 'composer install --no-interaction --optimize-autoloader'
+            sh 'composer install --no-interaction --optimize-autoloader'
 
             // Start all services
             sh 'docker compose up -d'
+            // Wait for MySQL to be ready (use retry logic)
+            sh '''
+                echo "Waiting for MySQL to be ready..."
+                for i in {1..30}; do
+                  docker compose exec -T database_test mysqladmin ping -h "localhost" -u root -proot && break
+                  sleep 2
+                done
+            '''
 
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls"'
            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m"'
+
            sh """
            docker exec api-backend-1 bash -c 'echo \"APP_ENV=test
                                                               KERNEL_CLASS=App\\\\Kernel
@@ -71,14 +80,8 @@ node("${AGENT_DOCKER}") {
 //            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:schema:create --env=test"'
 
 //
-            // Wait for MySQL to be ready (use retry logic)
-            sh '''
-                echo "Waiting for MySQL to be ready..."
-                for i in {1..30}; do
-                  docker compose exec -T database_test mysqladmin ping -h "localhost" -u root -proot && break
-                  sleep 2
-                done
-            '''
+
+
 
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
