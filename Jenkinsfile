@@ -17,14 +17,14 @@ pipeline {
             }
         }
 //
-//         stage('Frontend build image Pipeline') {
-//             agent { label "${AGENT_DOCKER}" }
-//             steps {
-//                 script {
-//                     load 'jenkins/frontend_build_image.groovy'
-//                 }
-//             }
-//         }
+        stage('Frontend build image Pipeline') {
+            agent { label "${AGENT_DOCKER}" }
+            steps {
+                script {
+                    load 'jenkins/frontend_build_image.groovy'
+                }
+            }
+        }
 
 //         stage('Backend install Pipeline') {
 //             agent { node { label 'backend-agent' } }
