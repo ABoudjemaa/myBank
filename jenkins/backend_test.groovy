@@ -42,17 +42,8 @@ node("${AGENT_DOCKER}") {
 
 
             // Start all services
-//             sh 'docker compose down -v || true'
+            sh 'docker compose down -v || true'
             sh 'docker compose up -d'
-//             // Wait for MySQL to be ready (use retry logic)
-//             sh """
-//                 echo "Waiting for MySQL to be ready..."
-//                 for i in {1..30}; do
-//                   docker exec api-database_test-1 bash -c 'mysql -u root -proot' && break
-//                   echo "MySQL not ready yet... retrying (\$i)..."
-//                   sleep 2
-//                 done
-//             """
 
            sh """
            docker exec api-backend-1 bash -c 'echo \"APP_ENV=test
@@ -66,7 +57,7 @@ node("${AGENT_DOCKER}") {
            """
 
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 10 && php bin/console doctrine:migrations:migrate --env=test"'
-            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 10 && php bin/console doctrine:schema:update --force --env=test"'
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project &&  php bin/console doctrine:schema:update --force --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
         }

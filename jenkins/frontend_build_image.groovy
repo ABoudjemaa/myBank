@@ -1,4 +1,6 @@
 stage('Build & Push Frontend Docker Image') {
+    deleteDir()
+    git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
     dir('front') {
         sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
         sh "docker build .  -t ${DOCKERHUB_USERNAME}/mybank_front:latest"

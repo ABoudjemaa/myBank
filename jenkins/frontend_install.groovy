@@ -1,4 +1,5 @@
 stage('Clone Frontend Repository') {
+    deleteDir()
     git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
 }
 
