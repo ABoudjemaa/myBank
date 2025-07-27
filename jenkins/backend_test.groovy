@@ -45,13 +45,14 @@ node("${AGENT_DOCKER}") {
             sh 'docker compose down -v || true'
             sh 'docker compose up -d'
             // Wait for MySQL to be ready (use retry logic)
-            sh '''
+            sh """
                 echo "Waiting for MySQL to be ready..."
                 for i in {1..30}; do
-                  docker compose exec -T database_test mysqladmin ping -h "localhost" -u root -proot && break
+                  docker exec database_test mysqladmin ping -h 127.0.0.1 --protocol=tcp -u root -proot && break
+                  echo "MySQL not ready yet... retrying (\$i)..."
                   sleep 2
                 done
-            '''
+            """
 
            sh """
            docker exec api-backend-1 bash -c 'echo \"APP_ENV=test
