@@ -65,7 +65,7 @@ node("${AGENT_DOCKER}") {
            """
 
 //             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console d:m:m --env=test"'
-            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console doctrine:schema:update --force"'
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console doctrine:schema:update --force --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
         }
