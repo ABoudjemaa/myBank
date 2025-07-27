@@ -1,5 +1,8 @@
 node("${AGENT_DOCKER}") {
     stage('Prepare Environment and Docker Compose') {
+        steps {
+            deleteDir() // fully clears the workspace, including vendor/
+        }
         sh 'rm -rf myBank'
         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
         dir('api') {
