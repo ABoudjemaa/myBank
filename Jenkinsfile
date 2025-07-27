@@ -21,14 +21,14 @@ pipeline {
 //             }
 //         }
 //
-//         stage('Install Backend') {
-//             agent { node { label 'backend-agent' } }
-//             steps {
-//                 script {
-//                     load 'jenkins/backend_install.groovy'
-//                 }
-//             }
-//         }
+        stage('Install Backend') {
+            agent { node { label 'backend-agent' } }
+            steps {
+                script {
+                    load 'jenkins/backend_install.groovy'
+                }
+            }
+        }
 
         stage('Test Backend') {
             steps {
