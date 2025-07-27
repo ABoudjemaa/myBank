@@ -42,7 +42,7 @@ node("${AGENT_DOCKER}") {
 
 
             // Start all services
-            sh 'docker compose down -v || true'
+//             sh 'docker compose down -v || true'
             sh 'docker compose up -d'
 
            sh """
