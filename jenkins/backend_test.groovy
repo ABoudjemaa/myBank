@@ -5,31 +5,31 @@ node("${AGENT_DOCKER}") {
         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
         dir('api') {
             // Create .env file before starting services
-//             sh """
-//                     echo \"APP_ENV=dev
-//                 APP_DEBUG=0
-//                 APP_SECRET=${APP_SECRET}
-//                 DATABASE_URL=mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4
-//                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
-//                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
-//                 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-//                 JWT_PASSPHRASE=${JWT_PASSPHRASE}
-//                 ADMIN_EMAIL=boudjemaa.amine.2003@gmail.com
-//                 ADMIN_PASSWORD=12345678\" > .env
-//             """
+            sh """
+                    echo \"APP_ENV=dev
+                APP_DEBUG=0
+                APP_SECRET=${APP_SECRET}
+                DATABASE_URL=mysql://root:root@database:3306/mybank-api-database?serverVersion=9.1.0&charset=utf8mb4
+                CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+                JWT_SECRET_KEY=${JWT_SECRET_KEY}
+                JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+                JWT_PASSPHRASE=${JWT_PASSPHRASE}
+                ADMIN_EMAIL=boudjemaa.amine.2003@gmail.com
+                ADMIN_PASSWORD=12345678\" > .env
+            """
 
-//             sh """
-//                 echo \"APP_ENV=test
-//                 KERNEL_CLASS=App\\\\Kernel
-//                 APP_SECRET=${APP_SECRET}
-//                 DATABASE_URL=mysql://root:root@database_test:3306/mybank_test?serverVersion=9.1.0&charset=utf8mb4
-//                 CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
-//                 JWT_SECRET_KEY=${JWT_SECRET_KEY}
-//                 JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
-//                 JWT_PASSPHRASE=${JWT_PASSPHRASE}
-//                 ADMIN_EMAIL=boudjemaa.amine.2003@gmail.com
-//                 ADMIN_PASSWORD=12345678\" > .env.test
-//             """
+            sh """
+                echo \"APP_ENV=test
+                KERNEL_CLASS=App\\\\Kernel
+                APP_SECRET=${APP_SECRET}
+                DATABASE_URL=mysql://root:root@database_test:3306/mybank_test?serverVersion=9.1.0&charset=utf8mb4
+                CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+                JWT_SECRET_KEY=${JWT_SECRET_KEY}
+                JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+                JWT_PASSPHRASE=${JWT_PASSPHRASE}
+                ADMIN_EMAIL=boudjemaa.amine.2003@gmail.com
+                ADMIN_PASSWORD=12345678\" > .env.test
+            """
 
             sh 'composer install --no-interaction --optimize-autoloader'
 
