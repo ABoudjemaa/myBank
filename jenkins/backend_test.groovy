@@ -1,5 +1,6 @@
 node("${AGENT_DOCKER}") {
     stage('Prepare Environment and Docker Compose') {
+        sh 'rm -rf myBank'
         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
         dir('api') {
             // Create .env file before starting services
@@ -48,9 +49,6 @@ node("${AGENT_DOCKER}") {
                 done
             '''
 
-//            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && ls"'
-//            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m"'
-
            sh """
            docker exec api-backend-1 bash -c 'echo \"APP_ENV=test
                                                               KERNEL_CLASS=App\\\\Kernel
@@ -61,16 +59,6 @@ node("${AGENT_DOCKER}") {
                                                               JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
                                                               JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env.test'
            """
-           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && cat .env.test"'
-
-
-//            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console cache:clear --env=test"'
-//            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && rm -rf var/cache/test"'
-//
-//
-//            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:database:create --env=test"'
-//            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:schema:create --env=test"'
-
 
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
