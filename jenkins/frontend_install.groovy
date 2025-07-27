@@ -5,7 +5,7 @@ stage('Clone Frontend Repository') {
 stage('Install & Run Frontend') {
     dir('front') {
         sh 'npm install'
-        sh "echo 'NEXT_PUBLIC_API_BASE_URL=http://host.docker.internal:8082/api' > .env"
+        sh "echo 'NEXT_PUBLIC_API_BASE_URL=http://backend/api' > .env"
         sh 'npx vitest run'
     }
     
