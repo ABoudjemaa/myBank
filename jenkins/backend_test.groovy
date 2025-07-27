@@ -42,7 +42,7 @@ node("${AGENT_DOCKER}") {
 
 
             // Start all services
-            sh 'docker compose down -v'
+//             sh 'docker compose down -v || true'
             sh 'docker compose up -d'
             // Wait for MySQL to be ready (use retry logic)
 //             sh '''
