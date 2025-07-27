@@ -7,6 +7,7 @@ stage('Install & Run Frontend') {
         sh 'npm install dotenv'
         sh 'npm install'
         sh 'ls -la'
+        sh 'curl http://backend/api'
         sh "echo 'NEXT_PUBLIC_API_BASE_URL=http://backend/api' > .env"
         sh 'cat .env'
         sh 'npx vitest run'
