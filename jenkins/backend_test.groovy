@@ -45,13 +45,13 @@ node("${AGENT_DOCKER}") {
             sh 'docker compose down -v'
             sh 'docker compose up -d'
             // Wait for MySQL to be ready (use retry logic)
-            sh '''
-                echo "Waiting for MySQL to be ready..."
-                for i in {1..30}; do
-                  docker compose exec -T database_test mysqladmin ping -h "localhost" -u root -proot && break
-                  sleep 2
-                done
-            '''
+//             sh '''
+//                 echo "Waiting for MySQL to be ready..."
+//                 for i in {1..30}; do
+//                   docker compose exec -T database_test mysqladmin ping -h "localhost" -u root -proot && break
+//                   sleep 2
+//                 done
+//             '''
 
            sh """
            docker exec api-backend-1 bash -c 'echo \"APP_ENV=test
@@ -64,7 +64,7 @@ node("${AGENT_DOCKER}") {
                                                               JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env.test'
            """
 
-            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m --env=test"'
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console d:m:m --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
         }
