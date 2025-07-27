@@ -1,9 +1,4 @@
 node("${AGENT_DOCKER}") {
-
-//     stage('Clone Backend') {
-//         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
-//     }
-
     stage('Prepare Environment and Docker Compose') {
         git branch: 'main', url: 'https://github.com/ABoudjemaa/myBank.git'
         dir('api') {
@@ -74,18 +69,20 @@ node("${AGENT_DOCKER}") {
 //
 //            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:database:create --env=test"'
 //            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console doctrine:schema:create --env=test"'
-           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m --env=test"'
-           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
-           sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
+
 //
-//             // Wait for MySQL to be ready (use retry logic)
-//             sh '''
-//                 echo "Waiting for MySQL to be ready..."
-//                 for i in {1..30}; do
-//                   docker compose exec -T database mysqladmin ping -h "localhost" -u root -proot && break
-//                   sleep 2
-//                 done
-//             '''
+            // Wait for MySQL to be ready (use retry logic)
+            sh '''
+                echo "Waiting for MySQL to be ready..."
+                for i in {1..30}; do
+                  docker compose exec -T database_test mysqladmin ping -h "localhost" -u root -proot && break
+                  sleep 2
+                done
+            '''
+
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console d:m:m --env=test"'
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
         }
     }
 
