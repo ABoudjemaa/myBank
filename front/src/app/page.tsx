@@ -1,5 +1,6 @@
 import NavBar from "@/components/nav-bar";
 import Footer from "@/components/footer";
+import Image from "next/image";
 
 
 function Home() {
@@ -12,7 +13,7 @@ function Home() {
                     Manage your expenses easily and stay in control of your money.
                 </p>
                 <div className={"flex justify-center items-center"}>
-                <img src={'/mybank.png'} alt={'mybank'}/>
+                <Image src={'/mybank.png'} alt={'mybank'} width={500} height={500}/>
                 </div>
             </main>
             <Footer/>
