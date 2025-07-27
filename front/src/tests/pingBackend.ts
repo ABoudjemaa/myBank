@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '' ;
+const API_URL = process.env.NEXT_PUBLIC_API_BASE_TEST_URL || '' ;
 
 export async function pingBackend(): Promise<boolean> {
     try {
