@@ -4,8 +4,9 @@ stage('Clone Frontend Repository') {
 
 stage('Install & Run Frontend') {
     dir('front') {
-        // sh 'npm install'
+        sh 'npm install'
         sh "echo 'NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}' > .env"
+        sh 'npx vitest run'
     }
     
 }

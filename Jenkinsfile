@@ -8,14 +8,14 @@ pipeline {
 //             }
 //         }
 
-//         stage('Frontend Pipeline') {
-//             agent { label 'front-agent' }
-//             steps {
-//                 script {
-//                     load 'jenkins/frontend_install.groovy'
-//                 }
-//             }
-//         }
+        stage('Frontend Pipeline') {
+            agent { label 'front-agent' }
+            steps {
+                script {
+                    load 'jenkins/frontend_install.groovy'
+                }
+            }
+        }
 //
 //         stage('Frontend build image Pipeline') {
 //             agent { label "${AGENT_DOCKER}" }
@@ -35,14 +35,13 @@ pipeline {
 //             }
 //         }
 
-        stage('Test Backend') {
-//             agent { node { label 'backend-agent' } }
-            steps {
-                script {
-                    load 'jenkins/backend_test.groovy'
-                }
-            }
-        }
+//         stage('Test Backend') {
+//             steps {
+//                 script {
+//                     load 'jenkins/backend_test.groovy'
+//                 }
+//             }
+//         }
 
 //         stage('Backend build image Pipeline') {
 //             agent { label "${AGENT_DOCKER}" }
