@@ -64,7 +64,8 @@ node("${AGENT_DOCKER}") {
                                                               JWT_PASSPHRASE=${JWT_PASSPHRASE}\" > .env.test'
            """
 
-            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console d:m:m --env=test"'
+//             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console d:m:m --env=test"'
+            sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && sleep 5 && php bin/console doctrine:schema:update --force"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/console app:create-user --env=test"'
             sh 'docker exec -i api-backend-1 bash -c "cd /var/www/project && php bin/phpunit"'
         }
