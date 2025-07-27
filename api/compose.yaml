@@ -13,7 +13,7 @@ services:
     image: 'mysql:9'
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mybank_test
+      MYSQL_DATABASE: mybank-api-database_test
     ports:
       - '3307:3306'
     volumes:
